@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="light">#05000000</color>
+    <color name="color_f6">#f6f6f6</color>
+    <color name="blue">#64CEF2</color>
+    <color name="gray">#50000000</color>
+    <color name="ltc">#6C6FFF</color>
+    <color name="eth">#FFBF01</color>
+    <color name="xmr">#90C552</color>
+    <color name="usdt">#7A82AC</color>
+    <color name="rmbx">#FA8294</color>
+    <color name="gray4">#1Ac8e9f9</color>
+    <color name="black">#000000</color>
+
+    <color name="color_69">#999999</color>
+    <color name="image_overlay_true">#80000000</color>
+    <color name="image_overlay_false">#20000000</color>
+    <color name="line_color">#EEEEEE</color>
+    <color name="color_fa">#FAFAFA</color>
+    <color name="tab_color_true">#FA632D</color>
+    <color name="tab_color_false">#9b9b9b</color>
+    <color name="color_f2">#F2F2F2</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_white">#F0FFFFFF</color>
+    <color name="transparent_db">#E0DBDBDB</color>
+    <color name="color_53">#53575e</color>
+    <color name="color_f0">#F0F0F0</color>
+    <color name="bar_grey_90">#dd393a3e</color>
+    <color name="color_4d">#4d4d4d</color>
+    <color name="color_orange">#E0FF6100</color>
+    <color name="blue2">#6099D0</color>
+    <color name="green">#7ED321</color>
+    <color name="sell">#52c7ca</color>
+    <color name="colorRedBg">#fa5148</color>
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="red">#ff0000</color>
+    <color name="redpacket">#FF9734</color>
+    <color name="redpacket2">#FE5419</color>
+    <color name="redpacket3">#FBC795</color>
+    <color name="redpacket4">#EC3431</color>
+    <color name="redpacket5">#eb5a46</color>
+    <color name="transfer">#FBA588</color>
+    <color name="dark_blue">#243042</color>
+    <color name="darkgrey">#E5E5E5</color>
+    <color name="green2">#52c7ca</color>
+    <color name="gray2">#F4F4F4</color>
+    <color name="gray3">#808080</color>
+    <color name="yikaijiang">#D39D39</color>
+    <color name="blueberry">#243042</color>
+    <color name="ashen">#8C929B</color>
+    <color name="blue3">#1F6BFF</color>
+    <color name="white">#ffffff</color>
+    <color name="white1">#80ffffff</color>
+    <color name="red_envelope">#f9bc77</color>
+    <color name="task_item">#F2F5FC</color>
+    <color name="yellow"> #ffde71</color>
+    <color name="red1">#f23f36</color>
+
+    <!--2.0版本主要顏色-->
+    <color name="app_bg_color">#242f43</color><!--用于APP的背景色，顶部导航栏背景色用于按钮和icon颜色-->
+    <color name="btn_bg_color">#07a7f3</color><!--用于于button,按钮颜色，可点击文字的颜色-->
+    <color name="main_text_color">#e9eff8</color><!--用于所有暗色背景下文字信息、内页标题信息-->
+    <color name="secondary_text_color">#aaacb2</color><!--用于辅助、次要文字信息-->
+    <color name="boundary_color">#10c8e9f9</color><!--用于分割线,浅色背景色-->
+    <color name="red_color">#e53131</color><!--用于分割线,浅色背景色-->
+    <color name="purple_color">#769af9</color><!--用于分割线,浅色背景色-->
+</resources>
