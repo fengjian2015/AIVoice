@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private MainAdapter adapter;
     private List<Fragment> fragmentList;
 
+    private int i = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
