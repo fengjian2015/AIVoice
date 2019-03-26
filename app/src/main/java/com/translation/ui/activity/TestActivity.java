@@ -3,6 +3,7 @@ package com.translation.ui.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -15,6 +16,7 @@ public class TestActivity extends AppCompatActivity {
     private SpeechRecognizer mIat;
     // 语音合成对象
     private SpeechSynthesizer mTts;
+    private Toast mToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private void init() {
+        mToast = Toast.makeText(this,"",Toast.LENGTH_SHORT);
         // 初始化合成对象
         mTts = SpeechSynthesizer.createSynthesizer(TestActivity.this, mTtsInitListener);
     }
