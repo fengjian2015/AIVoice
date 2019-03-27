@@ -6,75 +6,114 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-   <com.translation.ui.widget.CustomScrollViewPager
-       android:id="@+id/viewpager"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:layout_above="@+id/ll_menu"
-       />
-    <LinearLayout
-        android:id="@+id/ll_menu"
+    <com.translation.ui.widget.CustomScrollViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_main_bot_container" />
+
+    <LinearLayout
+        android:id="@+id/ll_main_bot_container"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
         android:layout_alignParentBottom="true"
-        android:layout_height="50dp"
-        android:background="#1d1f88">
+        android:orientation="horizontal"
+        android:visibility="visible">
+
         <LinearLayout
+            android:id="@+id/ll_main_tab_conversation_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="vertical"
+            android:gravity="center_horizontal"
             >
+
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/menu_message_selector"/>
+                android:id="@+id/iv_main_tab_conversation"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/menu_message_selector"
+                android:layout_marginTop="6dp"
+                />
+
             <TextView
+                android:id="@+id/tv_main_tab_conversation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_below="@+id/iv"
                 android:text="面对面"
-                android:textColor="@color/white"/>
+                android:textSize="@dimen/font_size_10"
+                android:textColor="@color/blue_gray_selector"
+                android:layout_marginTop="2dp"
+                />
+
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/ll_main_tab_contact_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="vertical"
+            android:gravity="center_horizontal"
             >
+
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/menu_friend_selector"/>
+                android:id="@+id/iv_main_tab_contact"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/menu_friend_selector"
+                android:layout_marginTop="6dp"
+                />
+
             <TextView
+                android:id="@+id/tv_main_tab_contact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_below="@+id/iv"
-                android:text="通讯录"
-                android:textColor="@color/white"/>
+                android:text="联系人"
+                android:textSize="@dimen/font_size_10"
+                android:textColor="@color/blue_gray_selector"
+                android:layout_marginTop="2dp"
+                />
+
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/ll_main_tab_more_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="vertical"
+            android:gravity="center_horizontal"
             >
+
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/menu_setting_selector"/>
+                android:id="@+id/iv_main_tab_more"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/menu_setting_selector"
+                android:layout_marginTop="6dp"
+                />
+
             <TextView
+                android:id="@+id/tv_main_tab_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_below="@+id/iv"
                 android:text="我的"
-                android:textColor="@color/white"/>
+                android:textSize="@dimen/font_size_10"
+                android:textColor="@color/blue_gray_selector"
+                android:layout_marginTop="2dp"
+                />
+
         </LinearLayout>
+
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/gray_de"
+        android:layout_above="@+id/ll_main_bot_container"
+        />
+
 </RelativeLayout>
