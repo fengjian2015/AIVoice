@@ -46,11 +46,9 @@ dependencies {
 //    implementation 'org.greenrobot:eventbus:3.1.1'
     implementation files('libs/Msc.jar')
     implementation files('libs/Sunflower.jar')
-<<<<<<< HEAD
-    implementation files('libs/AIUI.jar')
-=======
-
     implementation 'com.alibaba:fastjson:1.2.55'
     implementation 'com.yanzhenjie:permission:2.0.0-rc12'
->>>>>>> 83c84f43c720913712d5a2d531fc52c2df53a9d0
+    // amr file to pcm
+
+    implementation 'io.kvh:amr:1.1.1'
 }
