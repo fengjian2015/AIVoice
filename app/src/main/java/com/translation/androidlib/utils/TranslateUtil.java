@@ -1,4 +1,4 @@
-package com.translation.util;
+package com.translation.androidlib.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;

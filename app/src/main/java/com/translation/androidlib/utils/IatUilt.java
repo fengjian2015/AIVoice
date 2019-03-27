@@ -1,4 +1,4 @@
-package com.translation.util;
+package com.translation.androidlib.utils;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -66,7 +66,7 @@ public class IatUilt {
         if (ret != ErrorCode.SUCCESS) {
             Log.e("讯飞","识别失败,错误码：" + ret);
         } else {
-            byte[] audioData = FucUtil.readFile(file);
+            byte[] audioData = com.translation.util.FucUtil.readFile(file);
             if (null != audioData) {
                 // 一次（也可以分多次）写入音频文件数据，数据格式必须是采样率为8KHz或16KHz（本地识别只支持16K采样率，云端都支持），位长16bit，单声道的wav或者pcm
                 // 写入8KHz采样的音频时，必须先调用setParameter(SpeechConstant.SAMPLE_RATE, "8000")设置正确的采样率

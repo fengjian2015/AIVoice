@@ -1,4 +1,4 @@
-package com.translation.util;
+package com.translation.androidlib.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

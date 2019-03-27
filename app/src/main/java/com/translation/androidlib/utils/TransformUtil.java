@@ -1,4 +1,4 @@
-package com.translation.util;
+package com.translation.androidlib.utils;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import java.io.File;
 
 public class TransformUtil {
     //语音转文本，翻译
-    public static final int VOICETOTEXT=1;
+    public static final int VOICETOTEXT = 1;
     //语音转翻译后的语音
-    public static final int VOICE_TO_VOICE=2;
+    public static final int VOICE_TO_VOICE = 2;
 
-    public static final String EN="en";
-    public static final String ZH_CN="zh-cn";
+    public static final String EN = "en";
+    public static final String ZH_CN = "zh-cn";
 
     //语音合成
     private TtsUtil ttsUtil;
@@ -27,48 +27,55 @@ public class TransformUtil {
 
     private Context context;
     //类型
-    private int type=0;
+    private int type = 0;
     //目标语音 en   zh-cn
-    private String language="en";
+    private String language = "en";
 
     //语音转换的文本内容
     private String iatText;
+    private OnTransformListener onTransformListener;
 
 
-    public TransformUtil(Context context){
-        this.context=context;
-        ttsUtil=new TtsUtil(context);
-        iatUilt=new IatUilt(context);
+    public TransformUtil(Context context) {
+        this.context = context;
+        ttsUtil = new TtsUtil(context);
+        iatUilt = new IatUilt(context);
     }
 
     /**
      * 语音转文本并且翻译
+     *
      * @param file
      * @param language
      */
-    public void VoiceToText(File file,String language){
-        this.language=language;
-        type=VOICETOTEXT;
-        iatUilt.executeStream(file,mRecognizerListener);
+    public void VoiceToText(File file, String language) {
+        this.language = language;
+        type = VOICETOTEXT;
+        iatUilt.executeStream(file, mRecognizerListener);
     }
 
     /**
      * 语音转翻译后的语音
+     *
      * @param file
      * @param language
      */
-    public void VoiceToVoice(File file,String language){
-        this.language=language;
-        type=VOICE_TO_VOICE;
-        iatUilt.executeStream(file,mRecognizerListener);
+    public void VoiceToVoice(File file, String language) {
+        this.language = language;
+        type = VOICE_TO_VOICE;
+        iatUilt.executeStream(file, mRecognizerListener);
     }
 
+    public void setOnTransformListener(OnTransformListener onTransformListener) {
+        this.onTransformListener = onTransformListener;
+    }
 
     /**
      * 翻译
+     *
      * @param text
      */
-    public void translate(String text){
+    public void translate(String text) {
         new TranslateUtil().translate(context, "auto", language, text, translateCallback);
     }
 
@@ -79,10 +86,11 @@ public class TransformUtil {
         @Override
         public void onTranslateDone(String result) {
             // result是翻译结果，在这里使用翻译结果，比如使用对话框显示翻译结果
-            if(type==VOICETOTEXT){
-                // TODO: 2019/3/27 通过Evenbus回传
-            }else if(type==VOICE_TO_VOICE){
-                ttsUtil.ttsSynthesis(result,mTtsListener);
+            if (type == VOICETOTEXT) {
+                if (onTransformListener != null)
+                    onTransformListener.onTransform(result, "");
+            } else if (type == VOICE_TO_VOICE) {
+                ttsUtil.ttsSynthesis(result, mTtsListener);
             }
         }
     };
@@ -123,12 +131,12 @@ public class TransformUtil {
         public void onCompleted(SpeechError error) {
             if (error == null) {
                 // TODO: 2019/3/27 完成操作
-                if(type==VOICE_TO_VOICE){
-                    // TODO: 2019/3/27 通过Evenbus回传文件地址
-                    ttsUtil.getFile_content();
+                if (type == VOICE_TO_VOICE) {
+                    if (onTransformListener != null)
+                        onTransformListener.onTransform("", ttsUtil.getFile_content());
                 }
             } else if (error != null) {
-                Log.e("讯飞",error.getPlainDescription(true));
+                Log.e("讯飞", error.getPlainDescription(true));
             }
         }
 
@@ -152,7 +160,7 @@ public class TransformUtil {
         public void onError(SpeechError error) {
             // Tips：
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
-            Log.e("讯飞",error.getPlainDescription(true));
+            Log.e("讯飞", error.getPlainDescription(true));
         }
 
         @Override
@@ -163,10 +171,10 @@ public class TransformUtil {
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
             iatText = JsonParser.parseIatResult(results.getResultString());
-            Log.e("讯飞","结果："+iatText);
+            Log.e("讯飞", "结果：" + iatText);
             if (isLast) {
                 //TODO 最后的结果
-                if(type==VOICETOTEXT||type==VOICE_TO_VOICE){
+                if (type == VOICETOTEXT || type == VOICE_TO_VOICE) {
                     translate(iatText);
                 }
             }
@@ -187,4 +195,7 @@ public class TransformUtil {
         }
     };
 
+    interface OnTransformListener {
+        void onTransform(String results, String fileString);
+    }
 }

@@ -14,8 +14,5 @@ public class MainApplication extends Application {
         SpeechUtility.createUtility(this, "appid=5c9a2bc0" );
         //加解密工具初始化
         EnDecryptUtil.init(getApplicationContext());
-        SpeechUtility.createUtility(this, "appid=dsadasdasdasd" );
-        //加解密工具初始化
-        EnDecryptUtil.init(getApplicationContext());
     }
 }
