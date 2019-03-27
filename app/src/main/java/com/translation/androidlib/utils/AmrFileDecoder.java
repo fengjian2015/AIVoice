@@ -44,98 +44,43 @@ public class AmrFileDecoder {
 
      */
 
-    public String amrToWav(InputStream inputStream, String audioDir) throws IOException {
-
-
-
+    public static String amrToWav(InputStream inputStream, String audioDir) throws IOException {
         File resFile = new File(new File(audioDir), generalFileName());
-
         FileOutputStream fileOutputStream;
-
         if (!resFile.exists()) {
-
             resFile.createNewFile();
-
         }
-
-
-
         fileOutputStream = new FileOutputStream(resFile);
-
-
-
         long mDecoderState = AmrDecoder.init();
-
-
-
         byte[] readBuffer = new byte[AMR_FRAME_SIZE];
-
-
-
         //amr file has 6 bytes header: "23 21 41 4D 52 0A" => "#!amr.", so skip here
-
         try {
-
             inputStream.skip(6);
 
         } catch (IOException e) {
-
-
-
             e.printStackTrace();
-
         }
 
-
-
         while (inputStream.read(readBuffer) != -1) {
-
             // amr frame 32 bytes
-
             byte[] amrFrame = readBuffer.clone();
-
             // pcm frame 160 shorts
-
             short[] pcmFrame = new short[PCM_FRAME_SIZE];
-
             AmrDecoder.decode(mDecoderState, amrFrame, pcmFrame);
-
-
-
             byte[] pcmByte = new byte[pcmFrame.length * 2];
-
             ByteBuffer.wrap(pcmByte).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(pcmFrame);
-
-
-
             try {
-
                 fileOutputStream.write(pcmByte);
 
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
-
         }
-
         fileOutputStream.flush();
-
         fileOutputStream.close();
-
-
-
         AmrDecoder.exit(mDecoderState);
-
-
-
         String path = (resFile.getAbsolutePath());
-
-
-
         PcmToWavUtil pcmToWavUtil = new PcmToWavUtil();
-
         return pcmToWavUtil.pcmToWav(path);
 
     }
@@ -148,7 +93,7 @@ public class AmrFileDecoder {
 
      */
 
-    private String generalFileName() {
+    private static String generalFileName() {
 
         return (UUID.randomUUID().toString()) + FILE_SUFFIX_NAME;
 

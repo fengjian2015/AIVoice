@@ -50,81 +50,41 @@ public class PcmToWavUtil {
      */
 
     public String pcmToWav(String inFileName) {
-
-
-
         String outFileName = inFileName.replace(IN_FILE_SUFFIX_NAME, OUT_FILE_SUFFIX_NAME);
-
-
-
+        LogUtil.i("outFileName", outFileName);
         FileInputStream in;
-
         FileOutputStream out;
-
         long totalAudioLen;
-
         long totalDataLen;
-
         long longSampleRate = sampleRate;
-
         int channels = 1; // 单声道（pcm 是单声道的）
-
         long byteRate = 16 * sampleRate * channels / 8;
-
         byte[] data = new byte[bufferSize];
-
         try {
-
             in = new FileInputStream(inFileName);
-
             out = new FileOutputStream(outFileName);
-
             totalAudioLen = in.getChannel().size();
-
             totalDataLen = totalAudioLen + 36;
-
-
-
             writeWaveFileHeader(out, totalAudioLen, totalDataLen,
-
                     longSampleRate, channels, byteRate);
-
             while (in.read(data) != -1) {
-
                 out.write(data);
-
             }
-
             in.close();
-
             out.close();
 
         } catch (IOException e) {
-
-
-
             e.printStackTrace();
-
         }
-
-
-
         return outFileName;
-
     }
 
-
-
     /**
-
      * 加入wav文件头
-
      */
 
     private void writeWaveFileHeader(FileOutputStream out, long totalAudioLen,
-
                                      long totalDataLen, long longSampleRate, int channels, long byteRate)
-
             throws IOException {
 
         byte[] header = new byte[44];

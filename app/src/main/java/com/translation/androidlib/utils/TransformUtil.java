@@ -195,7 +195,7 @@ public class TransformUtil {
         }
     };
 
-    interface OnTransformListener {
+    public interface OnTransformListener {
         void onTransform(String results, String fileString);
     }
 }
