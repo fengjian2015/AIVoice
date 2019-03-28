@@ -7,10 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
 import com.translation.R;
 import com.translation.androidlib.datamanager.DataCache;
 import com.translation.androidlib.datamanager.SpCache;
 import com.translation.androidlib.observer.EventMsg;
+import com.translation.androidlib.utils.IMUtil;
+import com.translation.androidlib.utils.LogUtil;
 import com.translation.androidlib.utils.ToastShow;
 import com.translation.androidlib.utils.ToastUtil;
 import com.translation.component.base.BaseActivity;
@@ -38,6 +41,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.tv_login_find_back_pwd)
     TextView findBackTv;
 
+    private  String username;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -48,25 +52,20 @@ public class LoginActivity extends BaseActivity {
         setTitle(false, 0);
     }
 
+
     @OnClick({R.id.btn_login, R.id.btn_register})
     void onViewClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                String username = usernameEt.getText().toString().trim();
+                username = usernameEt.getText().toString().trim();
                 String password = pwdEt.getText().toString().trim();
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                     ToastUtil.showShort(getAppContext(), "请输入用户名和密码");
                 } else if (("aaaaa".equals(username) && "11111".equals(password))
                         || ("bbbbb".equals(username) && "11111".equals(password))) {
-                    startActivity(new Intent(getAppContext(), MainActivity.class));
-                    SpCons.setLoginState(getAppContext(), true);
-                    DataCache spCache = new SpCache(getAppContext());
-                    LoginUser loginUser = (LoginUser) spCache.getObject(SpCons.SP_KEY_LOGIN_USER);
-                    if (loginUser == null){
-                        loginUser = new LoginUser();
-                    }
-                    loginUser.setUsername(username);
-                    spCache.setObject(SpCons.SP_KEY_LOGIN_USER, loginUser);
+                    ToastShow.showToastShowCenter(getHostActivity(),"登陆中，请稍等");
+
+                    IMUtil.getInstance().login(username,password,new MyEMCallBack());
                 }
                 break;
 
@@ -75,6 +74,37 @@ public class LoginActivity extends BaseActivity {
                 break;
         }
     }
+
+     class MyEMCallBack implements EMCallBack {
+         @Override
+         public void onSuccess() {
+             ToastShow.showToast2(getHostActivity(),"登陆成功");
+             IMUtil.getInstance().init();
+             startActivity(new Intent(getAppContext(), MainActivity.class));
+             SpCons.setLoginState(getAppContext(), true);
+             DataCache spCache = new SpCache(getAppContext());
+             LoginUser loginUser = (LoginUser) spCache.getObject(SpCons.SP_KEY_LOGIN_USER);
+             if (loginUser == null){
+                 loginUser = new LoginUser();
+             }
+             loginUser.setUsername(username);
+             spCache.setObject(SpCons.SP_KEY_LOGIN_USER, loginUser);
+         }
+
+         @Override
+         public void onError(int code, String error) {
+             if(code==200){
+                 IMUtil.getInstance().init();
+             }else {
+                 ToastShow.showToast2(getHostActivity(),error);
+             }
+         }
+
+         @Override
+         public void onProgress(int progress, String status) {
+
+         }
+     }
 
     @Override
     public void onEventMsg(EventMsg msg) {

@@ -12,6 +12,8 @@ import com.translation.androidlib.observer.EventManager;
 import com.translation.androidlib.observer.EventMsg;
 import com.translation.androidlib.observer.OnEventMsgListener;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Darren on 2018/12/13.
  */
@@ -76,6 +78,7 @@ public abstract class BaseFragment extends Fragment
                              final ViewGroup container,
                              final Bundle savedInstanceState) {
         parentView = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this, parentView);
         initViews();
         return parentView;
     }

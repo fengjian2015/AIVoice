@@ -22,6 +22,8 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    //环信
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -51,4 +53,6 @@ dependencies {
     // amr file to pcm
 
     implementation 'io.kvh:amr:1.1.1'
+    //环信
+    implementation 'com.hyphenate:hyphenate-sdk:3.3.0'
 }

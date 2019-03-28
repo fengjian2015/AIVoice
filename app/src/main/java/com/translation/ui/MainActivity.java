@@ -3,11 +3,16 @@ package com.translation.ui;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.translation.R;
 import com.translation.androidlib.utils.AmrFileDecoder;
 import com.translation.androidlib.utils.FileUtil;
 import com.translation.androidlib.utils.LogUtil;
 import com.translation.androidlib.utils.TransformUtil;
+import com.translation.androidlib.utils.IMUtil;
+import com.translation.androidlib.utils.LogUtil;
 import com.translation.component.base.BaseActivity;
 import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
@@ -91,7 +96,13 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        initIM();
     }
+
+    private void initIM() {
+        IMUtil.getInstance().setMyConnectionListener(new MyConnectionListener());
+    }
+
 
     private void initMenu() {
         for (int i = 0; i < llMenu.getChildCount(); i++) {
@@ -123,4 +134,35 @@ public class MainActivity extends BaseActivity {
         selectFragment(0);
     }
 
+
+    /**
+     * 链接状态监听
+     */
+    //实现ConnectionListener接口
+    public class MyConnectionListener implements EMConnectionListener {
+        @Override
+        public void onConnected() {
+            LogUtil.d("fengjian", "onConnected" );
+        }
+
+        @Override
+        public void onDisconnected(final int error) {
+            LogUtil.d("fengjian","'"+error);
+            if (error == EMError.USER_REMOVED) {
+                // 显示帐号已经被移除
+            } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                // 显示帐号在其他设备登录
+            } else {
+//                        if (NetUtils.hasNetwork(MainActivity.this))
+                //连接不到聊天服务器
+//                        else
+                //当前网络不可用，请检查网络设置
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
