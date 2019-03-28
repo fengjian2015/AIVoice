@@ -32,6 +32,15 @@
         </activity>
 
 
+
+        <activity
+            android:name=".ui.activity.MainChatActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
+
+
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

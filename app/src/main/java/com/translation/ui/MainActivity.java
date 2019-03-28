@@ -1,17 +1,13 @@
 package com.translation.ui;
 
-import android.media.MediaPlayer;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.translation.R;
-import com.translation.androidlib.manager.TapeRecordManager;
 import com.translation.androidlib.utils.AmrFileDecoder;
 import com.translation.androidlib.utils.FileUtil;
 import com.translation.androidlib.utils.LogUtil;
 import com.translation.androidlib.utils.TransformUtil;
-import com.translation.androidlib.utils.TranslateUtil;
 import com.translation.component.base.BaseActivity;
 import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
@@ -21,7 +17,6 @@ import com.translation.ui.fragment.ConversationFragment;
 import com.translation.ui.fragment.MineFragment;
 import com.translation.ui.widget.CustomScrollViewPager;
 import com.yanzhenjie.permission.Permission;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;

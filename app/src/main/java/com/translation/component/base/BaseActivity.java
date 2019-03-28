@@ -37,9 +37,9 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         baseInstance = this;
+        getIntentData();
         init();
         initViews();
-        getIntentData();
         initViewsData();
         setListener();
 

@@ -32,7 +32,7 @@ public class TransformUtil {
     private String language = "en";
 
     //语音转换的文本内容
-    private String iatText;
+    private StringBuilder iatTextSb = new StringBuilder();
     private OnTransformListener onTransformListener;
 
 
@@ -170,12 +170,13 @@ public class TransformUtil {
 
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
-            iatText = JsonParser.parseIatResult(results.getResultString());
-            Log.e("讯飞", "结果：" + iatText);
+            iatTextSb.append(JsonParser.parseIatResult(results.getResultString()));
+//            Log.e("讯飞", "结果：" + iatText);
             if (isLast) {
                 //TODO 最后的结果
                 if (type == VOICETOTEXT || type == VOICE_TO_VOICE) {
-                    translate(iatText);
+                    translate(iatTextSb.toString());
+                    LogUtil.i("translate result", iatTextSb.toString());
                 }
             }
         }
