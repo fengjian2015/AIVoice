@@ -26,6 +26,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             + MessageDao.SELF_ID + " integer primary key autoincrement, "
             + MessageDao.MSG_ID + " varchar, "
             + MessageDao.AVATAR + " varchar, "
+            + MessageDao.CONTENT_TYPE + " varchar, "
             + MessageDao.CONTENT + " varchar, "
             + MessageDao.CHAT_ID + " varchar, "
             + MessageDao.CHAT_NAME + " varchar, "

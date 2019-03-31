@@ -150,6 +150,14 @@ public class MainChatActivity extends BaseActivity {
         setTitle(true, chatInfo.getNickname());
         initRecyclerView();
 
+        List<ChatMsg> dataList = MessageDao.getMessageBeforeList(getAppContext(), chatInfo.getUsername(),
+                System.currentTimeMillis());
+
+        msgList.clear();
+        if (dataList != null && !dataList.isEmpty()){
+            msgList.addAll(dataList);
+        }
+
     }
 
     @Override

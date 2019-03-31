@@ -141,7 +141,7 @@ public class TransformUtil {
 
         @Override
         public void onSpeakBegin() {
-            ttsUtil.pauseSpeaking();
+//            ttsUtil.pauseSpeaking();
         }
 
         @Override

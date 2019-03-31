@@ -3,6 +3,7 @@ package com.translation.androidlib.manager;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 
 import com.translation.androidlib.utils.FileUtil;
 import com.translation.androidlib.utils.TimeUtil;
@@ -87,6 +88,17 @@ public class TapeRecordManager {
                 file.delete();
                 currentVoicePath = null;
             }*/
+        }
+    }
+
+    public void playRecord(Context context, String path, MediaPlayer.OnCompletionListener completionListener){
+        try {
+            Uri uri = Uri.fromFile(new File(path));
+            mediaPlayer = MediaPlayer.create(context, uri);
+            mediaPlayer.start();
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
