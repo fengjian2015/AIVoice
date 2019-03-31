@@ -106,6 +106,7 @@ public class TransformUtil {
 
         @Override
         public void onSpeakBegin() {
+            ttsUtil.pauseSpeaking();
         }
 
         @Override
@@ -126,6 +127,7 @@ public class TransformUtil {
 
         @Override
         public void onSpeakProgress(int percent, int beginPos, int endPos) {
+            ttsUtil.pauseSpeaking();
             // 播放进度
 //            mPercentForPlaying = percent;
         }

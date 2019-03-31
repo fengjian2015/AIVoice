@@ -20,7 +20,7 @@ public class TtsUtil {
     // 语音合成对象
     private SpeechSynthesizer mTts;
     // 默认发音人
-    private String voicer = "xiaoyan";
+    private String voicer = "catherine";
     // 缓冲进度
     private int mPercentForBuffering = 0;
     // 播放进度
@@ -66,6 +66,7 @@ public class TtsUtil {
 
     public void  pauseSpeaking(){
         mTts.pauseSpeaking();
+        mTts.stopSpeaking();
     }
 
     /**
