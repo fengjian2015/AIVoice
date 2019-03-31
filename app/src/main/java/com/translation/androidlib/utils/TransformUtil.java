@@ -48,7 +48,7 @@ public class TransformUtil {
      * @param file
      * @param language
      */
-    public void VoiceToText(File file, String language) {
+    public void voiceToText(File file, String language) {
         this.language = language;
         type = VOICETOTEXT;
         iatUilt.executeStream(file, mRecognizerListener);
@@ -60,7 +60,7 @@ public class TransformUtil {
      * @param file
      * @param language
      */
-    public void VoiceToVoice(File file, String language) {
+    public void voiceToVoice(File file, String language) {
         this.language = language;
         type = VOICE_TO_VOICE;
         iatUilt.executeStream(file, mRecognizerListener);

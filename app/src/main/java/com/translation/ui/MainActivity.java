@@ -3,6 +3,7 @@ package com.translation.ui;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
@@ -12,7 +13,6 @@ import com.translation.androidlib.utils.FileUtil;
 import com.translation.androidlib.utils.LogUtil;
 import com.translation.androidlib.utils.TransformUtil;
 import com.translation.androidlib.utils.IMUtil;
-import com.translation.androidlib.utils.LogUtil;
 import com.translation.component.base.BaseActivity;
 import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
@@ -22,10 +22,16 @@ import com.translation.ui.fragment.ConversationFragment;
 import com.translation.ui.fragment.MineFragment;
 import com.translation.ui.widget.CustomScrollViewPager;
 import com.yanzhenjie.permission.Permission;
+import com.zlw.main.recorderlib.RecordManager;
+import com.zlw.main.recorderlib.recorder.listener.RecordResultListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Logger;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -68,7 +74,7 @@ public class MainActivity extends BaseActivity {
                         LogUtil.i("transform results", results);
                     }
                 });
-                transformUtil.VoiceToText(new File(filePath), TransformUtil.EN);
+                transformUtil.voiceToText(new File(filePath), TransformUtil.EN);
 
 
                 try {
@@ -79,6 +85,23 @@ public class MainActivity extends BaseActivity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+
+                /**
+                 * 录音
+                 *   RecordManager.getInstance().start();
+                 *   RecordManager.getInstance().pause();
+                 *     RecordManager.getInstance().resume();
+                 *       RecordManager.getInstance().stop();
+                 *
+                 */
+                RecordManager.getInstance().changeRecordDir(FileUtil.getSDVoiceRecordPath(getAppContext()));
+
+                RecordManager.getInstance().setRecordResultListener(new RecordResultListener() {
+                    @Override
+                    public void onResult(File result) {
+                        Toast.makeText(MainActivity.this, "录音文件： " + result.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
                 /*TapeRecordManager.getInstance().playRecord(filePath, new MediaPlayer.OnCompletionListener() {

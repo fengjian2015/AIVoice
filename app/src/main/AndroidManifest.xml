@@ -52,8 +52,11 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-
-
+        <!--录音服务-->
+        <service
+            android:name="com.zlw.main.recorderlib.recorder.RecordService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".ui.activity.WelcomeActivity">
             <intent-filter>

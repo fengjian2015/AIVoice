@@ -8,6 +8,9 @@ import com.hyphenate.chat.EMOptions;
 import com.iflytek.cloud.SpeechUtility;
 import com.translation.androidlib.datamanager.EnDecryptUtil;
 import com.translation.androidlib.utils.AppUtil;
+import com.translation.androidlib.utils.FileUtil;
+import com.zlw.main.recorderlib.RecordManager;
+import com.zlw.main.recorderlib.recorder.RecordConfig;
 
 public class MainApplication extends Application {
 
@@ -19,6 +22,10 @@ public class MainApplication extends Application {
         //加解密工具初始化
         EnDecryptUtil.init(getApplicationContext());
         initIM();
+        //初始化录音
+        RecordManager.getInstance().init(this, true);
+        RecordManager.getInstance().changeRecordDir(FileUtil.getSDVoiceRecordPath(getApplicationContext()));
+        RecordManager.getInstance().changeFormat(RecordConfig.RecordFormat.WAV);
     }
 
     private void initIM() {

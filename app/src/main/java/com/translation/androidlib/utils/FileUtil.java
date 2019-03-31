@@ -13,7 +13,7 @@ public class FileUtil {
     private static final int FLAG_SUCCESS = 1;//创建成功
     private static final int FLAG_EXISTS = 2;//已存在
     private static final int FLAG_FAILED = 3;//创建失败
-    private static final String DIR_NAME_MAIN = "HiChat/";
+    private static final String DIR_NAME_MAIN = "AIVoice/";
     private static final String DIR_NAME_IMG = "images/";
     private static final String DIR_NAME_DOWNLOAD = "download/";
     //录音文件夹名
