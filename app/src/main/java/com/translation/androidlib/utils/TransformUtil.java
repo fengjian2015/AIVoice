@@ -133,6 +133,7 @@ public class TransformUtil {
         @Override
         public void onCompleted(SpeechError error) {
             if (error == null) {
+                ttsUtil.pauseSpeaking();
                 // TODO: 2019/3/27 完成操作
                 if (type == VOICE_TO_VOICE) {
                     if (onTransformListener != null)

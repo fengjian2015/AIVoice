@@ -63,6 +63,11 @@ public class TtsUtil {
         return file_content;
     }
 
+
+    public void  pauseSpeaking(){
+        mTts.pauseSpeaking();
+    }
+
     /**
      * 初始化监听。
      */
