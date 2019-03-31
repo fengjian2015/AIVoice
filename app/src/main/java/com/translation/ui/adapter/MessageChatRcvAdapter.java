@@ -59,7 +59,7 @@ public class MessageChatRcvAdapter extends BaseRcvTopLoadAdapter {
     }
 
     @Override
-    protected void bindViewData(RecyclerView.ViewHolder holder, int position) {
+    protected void bindViewData(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder iHolder = (ItemViewHolder) holder;
 
@@ -82,11 +82,30 @@ public class MessageChatRcvAdapter extends BaseRcvTopLoadAdapter {
                 if (chatMsgList.get(position).getContentType() == ChatMsg.TYPE_CONTENT_TEXT) {
                     iHolder.leftContentTv.setVisibility(View.VISIBLE);
                     iHolder.leftVoiceRecordLl.setVisibility(View.GONE);
+
                 } else if (chatMsgList.get(position).getContentType() == ChatMsg.TYPE_CONTENT_TAPE_RECORD) {
                     iHolder.leftContentTv.setVisibility(View.GONE);
                     iHolder.leftVoiceRecordLl.setVisibility(View.VISIBLE);
                 }
             }
+
+            iHolder.leftVoiceRecordLl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (msgClickListener != null){
+                        msgClickListener.voiceRecordClick(position);
+                    }
+                }
+            });
+
+            iHolder.rightVoiceRecordLl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (msgClickListener != null){
+                        msgClickListener.voiceRecordClick(position);
+                    }
+                }
+            });
 
 
         }

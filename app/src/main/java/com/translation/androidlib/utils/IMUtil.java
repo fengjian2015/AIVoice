@@ -63,7 +63,7 @@ public class IMUtil {
         emMessage.setAttribute("txt", textContent);
 
         EMClient.getInstance().chatManager().sendMessage(emMessage);
-        msgSendSaveDB(context, textContent, ChatMsg.TYPE_CONTENT_TEXT, duration, filePath, receiver,
+        msgSendSaveDB(context, textContent, ChatMsg.TYPE_CONTENT_TAPE_RECORD, duration, filePath, receiver,
                 UserDao.user, language);
     }
 

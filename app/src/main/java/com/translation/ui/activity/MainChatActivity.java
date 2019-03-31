@@ -266,6 +266,7 @@ public class MainChatActivity extends BaseActivity {
                                 return;
                             }
                             String savePath = resource.getSavePath();
+                            LogUtil.i("savePath", savePath);
                             if (FileUtil.isFileExists(savePath)){
                                 playVoiceRecord(savePath, position);
                             }
