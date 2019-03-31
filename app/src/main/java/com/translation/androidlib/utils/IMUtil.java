@@ -91,6 +91,11 @@ public class IMUtil {
         }
 
         @Override
+        public void onMessageRecalled(List<EMMessage> list) {
+
+        }
+
+        @Override
         public void onMessageChanged(EMMessage message, Object change) {
             //消息状态变动
             LogUtil.d("fengjian", "消息状态变动" +message.toString());
