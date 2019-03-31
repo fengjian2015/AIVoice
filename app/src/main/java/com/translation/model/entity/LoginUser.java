@@ -9,6 +9,7 @@ public class LoginUser implements Serializable{
     private String nickName;
     private String phoneNum;
     private String email;
+    private String password;
 
     public LoginUser() {
     }
@@ -25,6 +26,14 @@ public class LoginUser implements Serializable{
         this.username = username;
         this.phoneNum = phoneNum;
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNickName() {
@@ -75,6 +84,7 @@ public class LoginUser implements Serializable{
                 ", nickName='" + nickName + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

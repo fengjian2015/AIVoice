@@ -73,23 +73,23 @@ public class MainActivity extends BaseActivity {
 
     private void initIM() {
         IMUtil.getInstance().setMyConnectionListener(new MyConnectionListener());
-        IMUtil.getInstance().login("aaaaa","bbbbb",new MyEMCallBack());
+        IMUtil.getInstance().login(UserDao.user.getUsername(), UserDao.user.getPassword(), new MyEMCallBack());
     }
 
 
     class MyEMCallBack implements EMCallBack {
         @Override
         public void onSuccess() {
-            ToastShow.showToast2(getHostActivity(),"登陆成功");
+            ToastShow.showToast2(getHostActivity(), "登陆成功");
 
         }
 
         @Override
         public void onError(int code, String error) {
-            if(code==200){
+            if (code == 200) {
                 IMUtil.getInstance().init();
-            }else {
-                ToastShow.showToast2(getHostActivity(),error);
+            } else {
+                ToastShow.showToast2(getHostActivity(), error);
             }
         }
 
@@ -137,12 +137,12 @@ public class MainActivity extends BaseActivity {
     public class MyConnectionListener implements EMConnectionListener {
         @Override
         public void onConnected() {
-            LogUtil.d("fengjian", "onConnected" );
+            LogUtil.d("fengjian", "onConnected");
         }
 
         @Override
         public void onDisconnected(final int error) {
-            LogUtil.d("fengjian","'"+error);
+            LogUtil.d("fengjian", "'" + error);
             if (error == EMError.USER_REMOVED) {
                 // 显示帐号已经被移除
             } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {

@@ -18,6 +18,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             + UserDao.USER_ID + " integer primary key autoincrement, "
             + UserDao.USERNAME + " varchar, "
             + UserDao.EMAIL + " varchar, "
+            + UserDao.PASSWORD + " varchar, "
             + UserDao.PHONE_NUM + " varchar);";
 
     private final String TABLE_MESSAGE = "create table "

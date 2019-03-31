@@ -19,6 +19,7 @@ public class UserDao {
     public static final String USERNAME = "username";
     public static final String PHONE_NUM = "phone_num";
     public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
 
     public static LoginUser user;
 
@@ -31,6 +32,7 @@ public class UserDao {
         values.put(USERNAME, user.getUsername());
         values.put(PHONE_NUM, user.getPhoneNum());
         values.put(EMAIL, user.getEmail());
+        values.put(PASSWORD, user.getPassword());
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
@@ -53,6 +55,7 @@ public class UserDao {
             loginUser.setUsername(cursor.getString(cursor.getColumnIndex(USERNAME)));
             loginUser.setPhoneNum(cursor.getString(cursor.getColumnIndex(PHONE_NUM)));
             loginUser.setEmail(cursor.getString(cursor.getColumnIndex(EMAIL)));
+            loginUser.setPassword(cursor.getString(cursor.getColumnIndex(PASSWORD)));
             cursor.close();
             db.close();
             return loginUser;

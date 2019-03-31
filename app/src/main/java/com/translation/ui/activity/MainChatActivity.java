@@ -171,20 +171,7 @@ public class MainChatActivity extends BaseActivity {
             }
         });
 
-        final TransformUtil transformUtil = new TransformUtil(getAppContext());
-        transformUtil.setOnTransformListener(new TransformUtil.OnTransformListener() {
-            @Override
-            public void onTransform(String results, String fileString) {
-                LogUtil.i("transform results", results);
-                LogUtil.i("transform fileString", fileString);
-                if (isTapeRecordStop){
-                    IMUtil.getInstance().sendText(getAppContext(), results, chatInfo,
-                            TransformUtil.ZH_CN);
-                }
-                ToastUtil.showShort(getAppContext(), results);
 
-            }
-        });
 
         RecordManager.getInstance().changeRecordDir(FileUtil.getSDVoiceRecordPath(getAppContext()));
         RecordManager.getInstance().setRecordResultListener(new RecordResultListener() {
@@ -194,13 +181,23 @@ public class MainChatActivity extends BaseActivity {
 
                 String filePath = result.getAbsolutePath();
 
+
+                final TransformUtil transformUtil = new TransformUtil(getAppContext());
                 transformUtil.voiceToText(new File(filePath), TransformUtil.ZH_CN, TransformUtil.EN);
-
-
+                transformUtil.setOnTransformListener(new TransformUtil.OnTransformListener() {
+                    @Override
+                    public void onTransform(String results, String fileString) {
+                        LogUtil.i("transform results", results);
+                        LogUtil.i("transform fileString", fileString);
+                        if (isTapeRecordStop){
+                            IMUtil.getInstance().sendText(getAppContext(), results, chatInfo,
+                                    TransformUtil.ZH_CN);
+                        }
+                        ToastUtil.showShort(getAppContext(), results);
+                    }
+                });
             }
         });
-
-
 
 
         //长按录音

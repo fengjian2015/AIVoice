@@ -42,6 +42,8 @@ public class LoginActivity extends BaseActivity {
     TextView findBackTv;
 
     private  String username;
+    private String password;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -58,14 +60,14 @@ public class LoginActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_login:
                 username = usernameEt.getText().toString().trim();
-                String password = pwdEt.getText().toString().trim();
+                password = pwdEt.getText().toString().trim();
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
                     ToastUtil.showShort(getAppContext(), "请输入用户名和密码");
                 } else if (("aaaaa".equals(username) && "11111".equals(password))
                         || ("bbbbb".equals(username) && "11111".equals(password))) {
                     ToastShow.showToastShowCenter(getHostActivity(),"登陆中，请稍等");
 
-                    IMUtil.getInstance().login(username,password,new MyEMCallBack());
+                    IMUtil.getInstance().login(username, password,new MyEMCallBack());
                 }
                 break;
 
@@ -87,6 +89,7 @@ public class LoginActivity extends BaseActivity {
                  loginUser = new LoginUser();
              }
              loginUser.setUsername(username);
+             loginUser.setPassword(password);
              spCache.setObject(SpCons.SP_KEY_LOGIN_USER, loginUser);
              UserDao.setUser(getAppContext(), loginUser);
              startActivity(new Intent(getAppContext(), MainActivity.class));
