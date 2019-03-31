@@ -50,7 +50,7 @@
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
             android:layout_toRightOf="@id/iv_conversation_chat_more"
-            android:visibility="gone"
+            android:visibility="visible"
             />
 
         <FrameLayout

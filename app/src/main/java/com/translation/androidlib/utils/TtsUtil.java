@@ -66,7 +66,7 @@ public class TtsUtil {
 
     public void  pauseSpeaking(){
         mTts.pauseSpeaking();
-        mTts.stopSpeaking();
+//        mTts.stopSpeaking();
     }
 
     /**

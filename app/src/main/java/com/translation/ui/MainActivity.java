@@ -16,6 +16,7 @@ import com.translation.androidlib.utils.IMUtil;
 import com.translation.component.base.BaseActivity;
 import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
+import com.translation.model.db.dao.UserDao;
 import com.translation.ui.adapter.MainAdapter;
 import com.translation.ui.fragment.ContactFragment;
 import com.translation.ui.fragment.ConversationFragment;
@@ -53,72 +54,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViewsData() {
+        UserDao.user = UserDao.getUser(getAppContext());
         setTitle(false, 0);
+
         ButterKnife.bind(this);
         initPage();
         initMenu();
-
-        Permissions.from(this, Permission.Group.STORAGE).start(new PermissionCallback() {
-            @Override
-            public void yes(List<String> data) {
-                String dirPath = FileUtil.getSDDirPath(getAppContext());
-//                String filePath = dirPath + "voiceRecord/20190327_230742_voiceRecord.amr";
-                String filePath = dirPath + "df39222d-ca4c-45b6-a7b2-21939ccae15e.wav";
-
-
-                LogUtil.i("filePath", filePath);
-                TransformUtil transformUtil = new TransformUtil(getAppContext());
-                transformUtil.setOnTransformListener(new TransformUtil.OnTransformListener() {
-                    @Override
-                    public void onTransform(String results, String fileString) {
-                        LogUtil.i("transform results", results);
-                    }
-                });
-                transformUtil.voiceToText(new File(filePath), TransformUtil.EN);
-
-
-                try {
-                    FileInputStream inputStream = new FileInputStream(filePath);
-                    String outPath =  AmrFileDecoder.amrToWav(inputStream, dirPath);
-                    LogUtil.i("outPath", outPath);
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                /**
-                 * 录音
-                 *   RecordManager.getInstance().start();
-                 *   RecordManager.getInstance().pause();
-                 *     RecordManager.getInstance().resume();
-                 *       RecordManager.getInstance().stop();
-                 *
-                 */
-                RecordManager.getInstance().changeRecordDir(FileUtil.getSDVoiceRecordPath(getAppContext()));
-
-                RecordManager.getInstance().setRecordResultListener(new RecordResultListener() {
-                    @Override
-                    public void onResult(File result) {
-                        Toast.makeText(MainActivity.this, "录音文件： " + result.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-                /*TapeRecordManager.getInstance().playRecord(filePath, new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        TapeRecordManager.getInstance().playEndOrFail();
-                    }
-                });*/
-
-            }
-
-            @Override
-            public void no(List<String> data) {
-
-            }
-        });
-
         initIM();
     }
 

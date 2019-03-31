@@ -38,57 +38,38 @@ public class ChatMsg {
     private String userId;
     private String friendNote;
     private int offMsgNum;//离线消息数量
+    private FileInfo resource;//文件
     private int isRead;//已读
     private int unread;//未读 0否；1是
     private int chatOpen;//聊天页是否打开; 0否；1是
     private boolean playing;//播放中
     private int show;//是否显示
     private boolean checked;//编辑状态是否选中
+    private String language;//zh-cn中文；en英文
 
 
     public ChatMsg() {
     }
 
-    public ChatMsg(String content, String fromid, String username, String avatar, String groupId, String groupname, String groupavatar, String groupnum, String chatId, String chatName, String chatAvatar, String msgType, long timestamp, boolean mine, String userId) {
+    public ChatMsg(int contentType, String content, String fromid, String username, String chatId, String chatName, long timestamp, boolean mine, String userId, String language) {
+        this.contentType = contentType;
         this.content = content;
         this.fromid = fromid;
         this.username = username;
-        this.avatar = avatar;
-        this.groupId = groupId;
-        this.groupname = groupname;
-        this.groupavatar = groupavatar;
-        this.groupnum = groupnum;
         this.chatId = chatId;
         this.chatName = chatName;
-        this.chatAvatar = chatAvatar;
-        this.msgType = msgType;
         this.timestamp = timestamp;
         this.mine = mine;
         this.userId = userId;
+        this.language = language;
     }
 
-    public int getChatOpen() {
-        return chatOpen;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setChatOpen(int chatOpen) {
-        this.chatOpen = chatOpen;
-    }
-
-    public int getUnread() {
-        return unread;
-    }
-
-    public void setUnread(int unread) {
-        this.unread = unread;
-    }
-
-    public int getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(int contentType) {
-        this.contentType = contentType;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getMsgId() {
@@ -99,101 +80,60 @@ public class ChatMsg {
         this.msgId = msgId;
     }
 
-    public long getCreateTimestamp() {
-        return createTimestamp;
+    public String getSelfId() {
+        return selfId;
     }
 
-    public void setCreateTimestamp(long createTimestamp) {
-        this.createTimestamp = createTimestamp;
+    public void setSelfId(String selfId) {
+        this.selfId = selfId;
     }
 
-    public int getShieldMark() {
-        return shieldMark;
+    public int getContentType() {
+        return contentType;
     }
 
-    public void setShieldMark(int shieldMark) {
-        this.shieldMark = shieldMark;
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
     }
 
-    public String getTopTime() {
-        return topTime;
+    public String getContent() {
+        return content;
     }
 
-    public void setTopTime(String topTime) {
-        this.topTime = topTime;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public int getTopMark() {
-        return topMark;
+    public String getFromid() {
+        return fromid;
     }
 
-    public void setTopMark(int topMark) {
-        this.topMark = topMark;
+    public void setFromid(String fromid) {
+        this.fromid = fromid;
     }
 
-    public long getTopTimestamp() {
-        return topTimestamp;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTopTimestamp(long topTimestamp) {
-        this.topTimestamp = topTimestamp;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public boolean isChecked() {
-        return checked;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-
-    public int getShow() {
-        return show;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setShow(int show) {
-        this.show = show;
-    }
-
-    public boolean isPlaying() {
-        return playing;
-    }
-
-    public void setPlaying(boolean playing) {
-        this.playing = playing;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public int getIsRead() {
-        return isRead;
-    }
-
-    public void setIsRead(int isRead) {
-        this.isRead = isRead;
-    }
-
-    public int getOffMsgNum() {
-        return offMsgNum;
-    }
-
-    public void setOffMsgNum(int offMsgNum) {
-        this.offMsgNum = offMsgNum;
-    }
-
-    public String getFriendNote() {
-        return friendNote;
-    }
-
-    public void setFriendNote(String friendNote) {
-        this.friendNote = friendNote;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getGroupname() {
@@ -220,6 +160,14 @@ public class ChatMsg {
         this.groupnum = groupnum;
     }
 
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
+
     public String getChatName() {
         return chatName;
     }
@@ -234,70 +182,6 @@ public class ChatMsg {
 
     public void setChatAvatar(String chatAvatar) {
         this.chatAvatar = chatAvatar;
-    }
-
-    public String getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getSelfId() {
-        return selfId;
-    }
-
-    public void setSelfId(String selfId) {
-        this.selfId = selfId;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getFromid() {
-        return fromid;
-    }
-
-    public void setFromid(String fromid) {
-        this.fromid = fromid;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public boolean isMine() {
-        return mine;
-    }
-
-    public void setMine(boolean mine) {
-        this.mine = mine;
     }
 
     public String getMsgType() {
@@ -316,12 +200,140 @@ public class ChatMsg {
         this.timestamp = timestamp;
     }
 
-    public String getUsername() {
-        return username;
+    public long getCreateTimestamp() {
+        return createTimestamp;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCreateTimestamp(long createTimestamp) {
+        this.createTimestamp = createTimestamp;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getTopTimestamp() {
+        return topTimestamp;
+    }
+
+    public void setTopTimestamp(long topTimestamp) {
+        this.topTimestamp = topTimestamp;
+    }
+
+    public String getTopTime() {
+        return topTime;
+    }
+
+    public void setTopTime(String topTime) {
+        this.topTime = topTime;
+    }
+
+    public int getTopMark() {
+        return topMark;
+    }
+
+    public void setTopMark(int topMark) {
+        this.topMark = topMark;
+    }
+
+    public int getShieldMark() {
+        return shieldMark;
+    }
+
+    public void setShieldMark(int shieldMark) {
+        this.shieldMark = shieldMark;
+    }
+
+    public boolean isMine() {
+        return mine;
+    }
+
+    public void setMine(boolean mine) {
+        this.mine = mine;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getFriendNote() {
+        return friendNote;
+    }
+
+    public void setFriendNote(String friendNote) {
+        this.friendNote = friendNote;
+    }
+
+    public int getOffMsgNum() {
+        return offMsgNum;
+    }
+
+    public void setOffMsgNum(int offMsgNum) {
+        this.offMsgNum = offMsgNum;
+    }
+
+    public FileInfo getResource() {
+        return resource;
+    }
+
+    public void setResource(FileInfo resource) {
+        this.resource = resource;
+    }
+
+    public int getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(int isRead) {
+        this.isRead = isRead;
+    }
+
+    public int getUnread() {
+        return unread;
+    }
+
+    public void setUnread(int unread) {
+        this.unread = unread;
+    }
+
+    public int getChatOpen() {
+        return chatOpen;
+    }
+
+    public void setChatOpen(int chatOpen) {
+        this.chatOpen = chatOpen;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public int getShow() {
+        return show;
+    }
+
+    public void setShow(int show) {
+        this.show = show;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     //按create时间戳正序排列
@@ -385,12 +397,14 @@ public class ChatMsg {
                 ", userId='" + userId + '\'' +
                 ", friendNote='" + friendNote + '\'' +
                 ", offMsgNum=" + offMsgNum +
+                ", resource=" + resource +
                 ", isRead=" + isRead +
                 ", unread=" + unread +
                 ", chatOpen=" + chatOpen +
                 ", playing=" + playing +
                 ", show=" + show +
                 ", checked=" + checked +
+                ", language=" + language +
                 '}';
     }
 }

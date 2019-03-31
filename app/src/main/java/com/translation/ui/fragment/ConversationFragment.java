@@ -1,90 +1,88 @@
 package com.translation.ui.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.translation.R;
-import com.translation.ui.adapter.MessageAdapter;
+import com.translation.androidlib.utils.LogUtil;
+import com.translation.component.base.BaseFragment;
+import com.translation.component.base.BaseRcvAdapter;
+import com.translation.component.constant.ContactCons;
+import com.translation.model.db.dao.ConversationDao;
+import com.translation.model.entity.ChatMsg;
+import com.translation.model.entity.FriendInfo;
+import com.translation.ui.activity.MainChatActivity;
+import com.translation.ui.adapter.ConversationListRcvAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+public class ConversationFragment extends BaseFragment {
 
-public class ConversationFragment extends Fragment {
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.refresh_layout)
-    SmartRefreshLayout mRefreshLayout;
-    Unbinder unbinder;
+    private RecyclerView containerRcv;
+    private ConversationListRcvAdapter rcvAdapter;
+    private List<ChatMsg> msgList = new ArrayList<>();
+    private FriendInfo chatInfo;
 
-    private View view;
-    private MessageAdapter messageAdapter;
-    private List<Map> list;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = View.inflate(getActivity(), R.layout.fragment_message, null);
-        unbinder = ButterKnife.bind(this, view);
-        initData();
-        initRecyclerView();
-        return view;
+    protected int getLayoutId() {
+        return R.layout.fragment_conversation;
     }
 
-    private void initData() {
-        list=new ArrayList<>();
-        for (int i=0;i<10;i++){
-            list.add(new HashMap());
+    @Override
+    protected void initViews() {
+        containerRcv = parentView.findViewById(R.id.rcv_conversation_container);
+    }
+
+    @Override
+    protected void initViewsData() {
+        initRecyclerView();
+        setViewByCache();
+    }
+
+    private void initRecyclerView() {
+        rcvAdapter = new ConversationListRcvAdapter(getHostActivity(), msgList);
+        final LinearLayoutManager manager = new LinearLayoutManager(getHostActivity());
+        containerRcv.setAdapter(rcvAdapter);
+        containerRcv.setLayoutManager(manager);
+        rcvAdapter.setOnItemClickListener(new BaseRcvAdapter.OnItemClickListener() {
+            @Override
+            public void itemClick(int position) {
+                ChatMsg chatMsg = msgList.get(position);
+                chatInfo = new FriendInfo();
+//                chatInfo.setId(chatMsg.getChatId());
+                chatInfo.setUsername(chatMsg.getChatName());
+                Intent intent = new Intent(getHostActivity(), MainChatActivity.class);
+                intent.putExtra(ContactCons.EXTRA_CONTACT_FRIEND_INFO, chatInfo);
+                if (chatMsg.getOffMsgNum() > 0) {
+                    intent.putExtra(ContactCons.EXTRA_MESSAGE_UNREAD_COUNT, chatMsg.getOffMsgNum());
+                    startActivityForResult(intent, ContactCons.REQ_CONVERSATION_LIST_CLICK);
+                } else {
+                    startActivity(intent);
+                }
+
+            }
+        });
+    }
+
+    private void updateRcv(){
+        if (rcvAdapter != null) {
+            Collections.sort(msgList, new ChatMsg.TopComparator());
+            rcvAdapter.notifyDataSetChanged();
         }
     }
 
-    public void initRecyclerView(){
-        messageAdapter = new MessageAdapter(getContext(), list);
-        messageAdapter.setOnItemClick(new MessageAdapter.OnItemClick() {
-            @Override
-            public void click(int id) {
-
-            }
-        });
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRefreshLayout.setEnableLoadMore(false);
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                mRefreshLayout.finishRefresh();
-            }
-        });
-
-        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
-                mRefreshLayout.finishLoadMore();
-            }
-        });
-        mRecyclerView.setAdapter(messageAdapter);
-
+    private void setViewByCache() {
+        List<ChatMsg> msgDataList = ConversationDao.getConversationList(getHostActivity());
+        LogUtil.i("setViewByCache", msgDataList);
+        if (msgDataList != null) {
+            msgList.clear();
+            msgList.addAll(msgDataList);
+            updateRcv();
+        }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+
 }

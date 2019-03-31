@@ -30,7 +30,7 @@ public class TransformUtil {
     private int type = 0;
     //目标语音 en   zh-cn
     private String accent = "en_us";
-    private String language ="zh-cn";
+    private String language = "zh-cn";
 
     //语音转换的文本内容
     private StringBuilder iatTextSb = new StringBuilder();
@@ -49,11 +49,11 @@ public class TransformUtil {
      * @param file
      * @param accent
      */
-    public void voiceToText(File file, String language,String accent) {
+    public void voiceToText(File file, String language, String accent) {
         this.accent = accent;
-        this.language=language;
+        this.language = language;
         type = VOICETOTEXT;
-        iatUilt.executeStream(file,language,accent, mRecognizerListener);
+        iatUilt.executeStream(file, language, accent, mRecognizerListener);
     }
 
     /**
@@ -62,11 +62,11 @@ public class TransformUtil {
      * @param file
      * @param accent
      */
-    public void voiceToVoice(File file,String language, String accent) {
+    public void voiceToVoice(File file, String language, String accent) {
         this.accent = accent;
-        this.language=language;
+        this.language = language;
         type = VOICE_TO_VOICE;
-        iatUilt.executeStream(file,language,accent, mRecognizerListener);
+        iatUilt.executeStream(file, language, accent, mRecognizerListener);
     }
 
     public void setOnTransformListener(OnTransformListener onTransformListener) {
@@ -75,8 +75,6 @@ public class TransformUtil {
 
     /**
      * 翻译
-     *
-     * @param text
      */
     public void translate(String text) {
         new TranslateUtil().translate(context, "auto", accent, text, translateCallback);
@@ -118,36 +116,35 @@ public class TransformUtil {
         }
 
         @Override
-        public void onBufferProgress(int percent, int beginPos, int endPos,
-                                     String info) {
+        public void onBufferProgress(int percent, int beginPos, int endPos,String info) {
             // 合成进度
 //            mPercentForBuffering = percent;
-
+            if (percent == 100){
+                // TODO: 2019/3/27 完成操作
+                if (type == VOICE_TO_VOICE) {
+                    if (onTransformListener != null){
+                        onTransformListener.onTransform("", ttsUtil.getFile_content());
+                    }
+                }
+            }
         }
 
         @Override
         public void onSpeakProgress(int percent, int beginPos, int endPos) {
-            ttsUtil.pauseSpeaking();
             // 播放进度
 //            mPercentForPlaying = percent;
         }
 
         @Override
         public void onCompleted(SpeechError error) {
-            if (error == null) {
-                ttsUtil.pauseSpeaking();
-                // TODO: 2019/3/27 完成操作
-                if (type == VOICE_TO_VOICE) {
-                    if (onTransformListener != null)
-                        onTransformListener.onTransform("", ttsUtil.getFile_content());
-                }
-            } else if (error != null) {
+            if (error != null) {
                 Log.e("讯飞", error.getPlainDescription(true));
             }
         }
 
         @Override
         public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+
         }
     };
 
@@ -176,13 +173,13 @@ public class TransformUtil {
 
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
+            LogUtil.i("听写监听器", results);
             iatTextSb.append(JsonParser.parseIatResult(results.getResultString()));
 //            Log.e("讯飞", "结果：" + iatText);
             if (isLast) {
                 //TODO 最后的结果
                 if (type == VOICETOTEXT || type == VOICE_TO_VOICE) {
                     translate(iatTextSb.toString());
-                    LogUtil.i("translate result", iatTextSb.toString());
                 }
             }
         }

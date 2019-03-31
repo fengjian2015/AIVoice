@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.hyphenate.EMCallBack;
 import com.translation.R;
 import com.translation.androidlib.datamanager.DataCache;
@@ -18,6 +17,7 @@ import com.translation.androidlib.utils.ToastShow;
 import com.translation.androidlib.utils.ToastUtil;
 import com.translation.component.base.BaseActivity;
 import com.translation.component.constant.SpCons;
+import com.translation.model.db.dao.UserDao;
 import com.translation.model.entity.LoginUser;
 import com.translation.ui.MainActivity;
 
@@ -80,7 +80,6 @@ public class LoginActivity extends BaseActivity {
          public void onSuccess() {
              ToastShow.showToast2(getHostActivity(),"登陆成功");
              IMUtil.getInstance().init();
-             startActivity(new Intent(getAppContext(), MainActivity.class));
              SpCons.setLoginState(getAppContext(), true);
              DataCache spCache = new SpCache(getAppContext());
              LoginUser loginUser = (LoginUser) spCache.getObject(SpCons.SP_KEY_LOGIN_USER);
@@ -89,6 +88,9 @@ public class LoginActivity extends BaseActivity {
              }
              loginUser.setUsername(username);
              spCache.setObject(SpCons.SP_KEY_LOGIN_USER, loginUser);
+             UserDao.setUser(getAppContext(), loginUser);
+             startActivity(new Intent(getAppContext(), MainActivity.class));
+
          }
 
          @Override

@@ -4,17 +4,43 @@ import java.io.Serializable;
 
 public class LoginUser implements Serializable{
 
+    private String userId;
     private String username;
-    private String email;
+    private String nickName;
     private String phoneNum;
+    private String email;
 
     public LoginUser() {
     }
 
-    public LoginUser(String username, String email, String phoneNum) {
+    public LoginUser(String userId, String username, String nickName, String phoneNum, String email) {
+        this.userId = userId;
         this.username = username;
-        this.email = email;
+        this.nickName = nickName;
         this.phoneNum = phoneNum;
+        this.email = email;
+    }
+
+    public LoginUser(String username, String phoneNum, String email) {
+        this.username = username;
+        this.phoneNum = phoneNum;
+        this.email = email;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -44,9 +70,11 @@ public class LoginUser implements Serializable{
     @Override
     public String toString() {
         return "LoginUser{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
+                "userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

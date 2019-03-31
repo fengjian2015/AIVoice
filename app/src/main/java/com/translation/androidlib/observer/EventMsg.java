@@ -7,6 +7,7 @@ package com.translation.androidlib.observer;
 public class EventMsg {
 
     public static final int REGISTER_FINISH = 0;
+    public static final int SOCKET_ON_MESSAGE = 1;
 
 
 

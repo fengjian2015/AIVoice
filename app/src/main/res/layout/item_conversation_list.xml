@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="69dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <FrameLayout
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        >
+
+        <com.translation.androidlib.widget.CircleImageView
+            android:id="@+id/iv_item_conversation_avatar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:scaleType="fitXY"
+            app:shape_type="round"
+            tools:src="@drawable/img_avatar_default"
+            />
+
+        <ImageView
+            android:id="@+id/iv_item_conversation_shield_alpha"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white_alpha_60"
+            android:visibility="invisible"
+            />
+
+        <ImageView
+            android:id="@+id/iv_item_conversation_shield_icon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/con_shield_friend"
+            android:layout_gravity="end|bottom"
+            android:visibility="invisible"
+            />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="11dp">
+
+        <TextView
+            android:id="@+id/tv_item_conversation_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="name"
+            android:textSize="@dimen/font_size_17"
+            android:textColor="@color/black_33"
+            android:layout_marginTop="7dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_conversation_message_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="msg"
+            android:textSize="@dimen/font_size_13"
+            android:textColor="@color/gray_92"
+            android:layout_below="@+id/tv_item_conversation_name"
+            android:layout_alignLeft="@+id/tv_item_conversation_name"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginRight="15dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_item_conversation_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="time"
+            android:textSize="@dimen/font_size_12"
+            android:textColor="@color/gray_99"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="15dp"
+            android:visibility="visible"
+            />
+
+        <ImageView
+            android:id="@+id/iv_item_conversation_top_mark"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/icon_topping"
+            android:layout_toLeftOf="@+id/tv_item_conversation_time"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="5dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/gray_f1"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>
