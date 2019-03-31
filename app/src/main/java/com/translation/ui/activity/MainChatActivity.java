@@ -175,12 +175,12 @@ public class MainChatActivity extends BaseActivity {
         transformUtil.setOnTransformListener(new TransformUtil.OnTransformListener() {
             @Override
             public void onTransform(String results, String fileString) {
-                if (isTapeRecordStop){
-                    IMUtil.getInstance().sendVoice(getAppContext(), chatInfo, fileString,
-                            tapeRecordSecond, TransformUtil.ZH_CN);
-                }
                 LogUtil.i("transform results", results);
                 LogUtil.i("transform fileString", fileString);
+                if (isTapeRecordStop){
+                    IMUtil.getInstance().sendText(getAppContext(), results, chatInfo,
+                            TransformUtil.ZH_CN);
+                }
                 ToastUtil.showShort(getAppContext(), results);
 
             }
@@ -194,7 +194,7 @@ public class MainChatActivity extends BaseActivity {
 
                 String filePath = result.getAbsolutePath();
 
-                transformUtil.voiceToVoice(new File(filePath), TransformUtil.ZH_CN, TransformUtil.EN);
+                transformUtil.voiceToText(new File(filePath), TransformUtil.ZH_CN, TransformUtil.EN);
 
 
             }

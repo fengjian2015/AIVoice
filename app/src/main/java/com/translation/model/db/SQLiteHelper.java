@@ -50,6 +50,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             + MessageDao.CHANNEL + " varchar, "
             + MessageDao.CONNECT_STATE + " varchar, "
             + MessageDao.SHOW + " varchar, "
+            + MessageDao.LANGUAGE + " varchar, "
             + MessageDao.USER_ID + " varchar);";
 
     private final String TABLE_CONVERSATION = "create table "

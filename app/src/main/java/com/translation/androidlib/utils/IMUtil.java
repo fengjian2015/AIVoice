@@ -51,7 +51,14 @@ public class IMUtil {
         EMClient.getInstance().addConnectionListener(connectionListener);
     }
 
-    public void sendVoice(Context context, FriendInfo receiver, String filePath, int duration, String language) {
+    public void sendText(Context context, String msgContent, FriendInfo receiver, String language){
+        EMMessage emMessage = EMMessage.createTxtSendMessage(msgContent, receiver.getUsername());
+        emMessage.setAttribute("language", "ch");
+        EMClient.getInstance().chatManager().sendMessage(emMessage);
+        msgSendSaveDB(context, receiver, UserDao.user, msgContent, language);
+    }
+
+    public void sendVoice(Context context, String filePath, FriendInfo receiver, int duration, String language) {
         EMMessage message = EMMessage.createVoiceSendMessage(filePath, duration, receiver.getUsername());
         // 增加自己特定的属性
 //        message.setAttribute("language", "ch");
