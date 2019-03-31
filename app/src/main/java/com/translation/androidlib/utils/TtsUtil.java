@@ -111,7 +111,7 @@ public class TtsUtil {
         //设置播放器音频流类型
         mTts.setParameter(SpeechConstant.STREAM_TYPE, "3");
         // 设置播放合成音频打断音乐播放，默认为true
-        mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "true");
+        mTts.setParameter(SpeechConstant.KEY_REQUEST_FOCUS, "false");
 
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         mTts.setParameter(SpeechConstant.AUDIO_FORMAT, "pcm");
