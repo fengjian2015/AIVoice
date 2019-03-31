@@ -75,6 +75,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initIM() {
+        Intent intent=getIntent();
+        if(intent!=null&&intent.getBooleanExtra("login",false)){
+            return;
+        }
         IMUtil.getInstance().setMyConnectionListener(new MyConnectionListener());
         IMUtil.getInstance().login(UserDao.user.getUsername(), UserDao.user.getPassword(), new MyEMCallBack());
     }
@@ -84,16 +88,13 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onSuccess() {
             ToastShow.showToast2(getHostActivity(), "登陆成功");
+            IMUtil.getInstance().init();
 
         }
 
         @Override
         public void onError(int code, String error) {
-            if (code == 200) {
-                IMUtil.getInstance().init();
-            } else {
-                ToastShow.showToast2(getHostActivity(), error);
-            }
+            ToastShow.showToast2(getHostActivity(),error);
         }
 
         @Override

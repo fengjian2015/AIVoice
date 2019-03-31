@@ -92,17 +92,21 @@ public class LoginActivity extends BaseActivity {
              loginUser.setPassword(password);
              spCache.setObject(SpCons.SP_KEY_LOGIN_USER, loginUser);
              UserDao.setUser(getAppContext(), loginUser);
-             startActivity(new Intent(getAppContext(), MainActivity.class));
+
+             Intent intent = new Intent(getAppContext(), MainActivity.class);
+             intent.putExtra("login",true);
+             startActivity(intent);
+
              getHostActivity().finish();
          }
 
          @Override
          public void onError(int code, String error) {
-             if(code==200){
-                 IMUtil.getInstance().init();
-             }else {
+//             if(code==200){
+//                 IMUtil.getInstance().init();
+//             }else {
                  ToastShow.showToast2(getHostActivity(),error);
-             }
+//             }
          }
 
          @Override
