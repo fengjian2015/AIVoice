@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity {
              spCache.setObject(SpCons.SP_KEY_LOGIN_USER, loginUser);
              UserDao.setUser(getAppContext(), loginUser);
              startActivity(new Intent(getAppContext(), MainActivity.class));
-
+             getHostActivity().finish();
          }
 
          @Override
