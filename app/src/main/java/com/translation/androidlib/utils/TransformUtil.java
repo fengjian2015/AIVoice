@@ -126,7 +126,7 @@ public class TransformUtil {
             // result是翻译结果，在这里使用翻译结果，比如使用对话框显示翻译结果
             if (type == VOICE_TO_TEXT) {
                 if (onTransformListener != null)
-                    onTransformListener.onTransform(result, "", type);
+                    onTransformListener.onTransform(result, ttsUtil.getFile_content(), type);
             } else if (type == VOICE_TO_VOICE || type == TEXT_TO_VOICE_TRANSLATION || type == TEXT_TO_VOICE) {
                 ttsUtil.ttsSynthesis(result, mTtsListener);
             }

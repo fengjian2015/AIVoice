@@ -177,7 +177,7 @@ public class MainChatActivity extends BaseActivity {
         RecordManager.getInstance().changeRecordDir(FileUtil.getSDVoiceRecordPath(getAppContext()));
         RecordManager.getInstance().setRecordResultListener(new RecordResultListener() {
             @Override
-            public void onResult(File result) {
+            public void onResult(final File result) {
                 LogUtil.i("录音文件", result.getAbsolutePath());
 
                 String filePath = result.getAbsolutePath();
@@ -191,7 +191,7 @@ public class MainChatActivity extends BaseActivity {
                         LogUtil.i("transform fileString", fileString);
                         if (isTapeRecordStop && type == TransformUtil.VOICE_TO_TEXT) {
                             IMUtil.getInstance().sendText(getAppContext(), results, tapeRecordSecond,
-                                    fileString, chatInfo, TransformUtil.ZH_CN);
+                                    result.getAbsolutePath(), chatInfo, TransformUtil.ZH_CN);
                         }
                         ToastUtil.showShort(getAppContext(), results);
                     }
@@ -310,7 +310,6 @@ public class MainChatActivity extends BaseActivity {
             animDrawable.stop();
         }
     }
-
 
     //播放录音
     private void playVoiceRecord(String path, final int position) {
