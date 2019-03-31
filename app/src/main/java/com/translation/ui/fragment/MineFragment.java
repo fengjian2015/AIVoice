@@ -55,6 +55,7 @@ public class MineFragment extends BaseFragment {
 
         @Override
         public void onError(int code, String error) {
+            startActivity(new Intent(getHostActivity(), LoginActivity.class));
             ToastShow.showToast2(getHostActivity(),error);
         }
 

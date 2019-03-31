@@ -7,6 +7,8 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessageBody;
+import com.hyphenate.chat.adapter.message.EMAMessageBody;
 import com.translation.androidlib.observer.EventManager;
 import com.translation.androidlib.observer.EventMsg;
 import com.translation.model.db.dao.MessageDao;
@@ -53,7 +55,8 @@ public class IMUtil {
 
     public void sendText(Context context, String msgContent, FriendInfo receiver, String language){
         EMMessage emMessage = EMMessage.createTxtSendMessage(msgContent, receiver.getUsername());
-        emMessage.setAttribute("language", "ch");
+        emMessage.setAttribute("language", language);
+        emMessage.setAttribute("txt",msgContent);
         EMClient.getInstance().chatManager().sendMessage(emMessage);
         msgSendSaveDB(context, receiver, UserDao.user, msgContent, language);
     }
@@ -82,7 +85,8 @@ public class IMUtil {
         public void onMessageReceived(List<EMMessage> messages) {
             //收到消息
             for (EMMessage emMessage : messages) {
-                LogUtil.d("fengjian", "收到消息" + emMessage.toString() + "  " + emMessage.getStringAttribute("language", ""));
+                LogUtil.d("fengjian", "收到消息" + emMessage.toString() + "  " + emMessage.getStringAttribute("language", "")+"  content:"+emMessage.getBody().toString());
+
             }
 
         }
