@@ -54,9 +54,9 @@ public class IatUilt {
      * 执行音频流识别操作
      * @param file 传入音频地址
      */
-    public void executeStream(File file,RecognizerListener mRecognizerListener) {
+    public void executeStream(File file,String language,String accent,RecognizerListener mRecognizerListener) {
         // 设置参数
-        setLatParam();
+        setLatParam(language,accent);
         // 设置音频来源为外部文件
         mIat.setParameter(SpeechConstant.AUDIO_SOURCE, "-1");
         // 也可以像以下这样直接设置音频文件路径识别（要求设置文件在sdcard上的全路径）：
@@ -94,10 +94,9 @@ public class IatUilt {
      * 语音听写参数设置
      * @return
      */
-    public void setLatParam() {
+    public void setLatParam(String language,String accent) {
         // 清空参数
         mIat.setParameter(SpeechConstant.PARAMS, null);
-        String lag = "en_us";//mandarin
         // 设置引擎
         mIat.setParameter(SpeechConstant.ENGINE_TYPE, mEngineType);
         // 设置返回结果格式
@@ -108,15 +107,15 @@ public class IatUilt {
             mIat.setParameter(ResourceUtil.ASR_RES_PATH, getResourcePath());
         }
         //设置语言，目前离线听写仅支持中文
-        if (lag.equals("en_us")) {
+        if (language.equals("en_us")) {
             // 设置语言
-            mIat.setParameter(SpeechConstant.LANGUAGE, "en_us");
-            mIat.setParameter(SpeechConstant.ACCENT, null);
+            mIat.setParameter(SpeechConstant.LANGUAGE, language);
+            mIat.setParameter(SpeechConstant.ACCENT, accent);
         } else {
             // 设置语言
-            mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+            mIat.setParameter(SpeechConstant.LANGUAGE, language);
             // 设置语言区域
-            mIat.setParameter(SpeechConstant.ACCENT, lag);
+            mIat.setParameter(SpeechConstant.ACCENT, accent);
         }
 
         // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理

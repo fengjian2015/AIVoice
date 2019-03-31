@@ -29,7 +29,8 @@ public class TransformUtil {
     //类型
     private int type = 0;
     //目标语音 en   zh-cn
-    private String language = "en";
+    private String accent = "en_us";
+    private String language ="zh-cn";
 
     //语音转换的文本内容
     private StringBuilder iatTextSb = new StringBuilder();
@@ -46,24 +47,26 @@ public class TransformUtil {
      * 语音转文本并且翻译
      *
      * @param file
-     * @param language
+     * @param accent
      */
-    public void voiceToText(File file, String language) {
-        this.language = language;
+    public void voiceToText(File file, String language,String accent) {
+        this.accent = accent;
+        this.language=language;
         type = VOICETOTEXT;
-        iatUilt.executeStream(file, mRecognizerListener);
+        iatUilt.executeStream(file,language,accent, mRecognizerListener);
     }
 
     /**
      * 语音转翻译后的语音
      *
      * @param file
-     * @param language
+     * @param accent
      */
-    public void voiceToVoice(File file, String language) {
-        this.language = language;
+    public void voiceToVoice(File file,String language, String accent) {
+        this.accent = accent;
+        this.language=language;
         type = VOICE_TO_VOICE;
-        iatUilt.executeStream(file, mRecognizerListener);
+        iatUilt.executeStream(file,language,accent, mRecognizerListener);
     }
 
     public void setOnTransformListener(OnTransformListener onTransformListener) {
@@ -76,7 +79,7 @@ public class TransformUtil {
      * @param text
      */
     public void translate(String text) {
-        new TranslateUtil().translate(context, "auto", language, text, translateCallback);
+        new TranslateUtil().translate(context, "auto", accent, text, translateCallback);
     }
 
     /**
