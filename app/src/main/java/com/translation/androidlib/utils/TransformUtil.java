@@ -52,6 +52,7 @@ public class TransformUtil {
      * @param accent
      */
     public void textToVoicet(String content, String language, String accent) {
+        iatTextSb.delete(0,iatTextSb.length());
         this.accent = accent;
         this.language = language;
         type = TEXT_TO_VOICE;
@@ -66,6 +67,7 @@ public class TransformUtil {
      * @param accent
      */
     public void voiceToText(File file, String language, String accent) {
+        iatTextSb.delete(0,iatTextSb.length());
         this.accent = accent;
         this.language = language;
         type = VOICETOTEXT;
@@ -79,6 +81,7 @@ public class TransformUtil {
      * @param accent
      */
     public void voiceToVoice(File file, String language, String accent) {
+        iatTextSb.delete(0,iatTextSb.length());
         this.accent = accent;
         this.language = language;
         type = VOICE_TO_VOICE;
