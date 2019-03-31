@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onSuccess() {
             ToastShow.showToast2(getHostActivity(), "登陆成功");
-            IMUtil.getInstance().init();
+            IMUtil.getInstance().init(getAppContext());
 
         }
 

@@ -13,7 +13,7 @@ import java.io.File;
 
 public class TransformUtil {
     //语音转文本，翻译
-    public static final int VOICETOTEXT = 1;
+    public static final int VOICE_TO_TEXT = 1;
     //语音转翻译后的语音
     public static final int VOICE_TO_VOICE = 2;
     //文本转语音
@@ -50,24 +50,26 @@ public class TransformUtil {
 
     /**
      * 文字转语音
+     *
      * @param content
      * @param accent
      */
-    public void textToVoicet(String content, String language, String accent) {
-        iatTextSb.delete(0,iatTextSb.length());
+    public void textToVoice(String content, String language, String accent) {
+        iatTextSb.delete(0, iatTextSb.length());
         this.accent = accent;
         this.language = language;
         type = TEXT_TO_VOICE;
-        translate(content);
+        ttsUtil.ttsSynthesis(content, mTtsListener);
     }
 
     /**
      * 文字转语音并且翻译
+     *
      * @param content
      * @param accent
      */
     public void textToVoicetTranslation(String content, String language, String accent) {
-        iatTextSb.delete(0,iatTextSb.length());
+        iatTextSb.delete(0, iatTextSb.length());
         this.accent = accent;
         this.language = language;
         type = TEXT_TO_VOICE_TRANSLATION;
@@ -82,11 +84,11 @@ public class TransformUtil {
      * @param accent
      */
     public void voiceToText(File file, String language, String accent) {
-        iatTextSb.delete(0,iatTextSb.length());
+        iatTextSb.delete(0, iatTextSb.length());
         this.accent = accent;
         this.language = language;
-        type = VOICETOTEXT;
-        iatUilt.executeStream(file,language,accent,mRecognizerListener);
+        type = VOICE_TO_TEXT;
+        iatUilt.executeStream(file, language, accent, mRecognizerListener);
     }
 
 
@@ -97,7 +99,7 @@ public class TransformUtil {
      * @param accent
      */
     public void voiceToVoice(File file, String language, String accent) {
-        iatTextSb.delete(0,iatTextSb.length());
+        iatTextSb.delete(0, iatTextSb.length());
         this.accent = accent;
         this.language = language;
         type = VOICE_TO_VOICE;
@@ -122,10 +124,10 @@ public class TransformUtil {
         @Override
         public void onTranslateDone(String result) {
             // result是翻译结果，在这里使用翻译结果，比如使用对话框显示翻译结果
-            if (type == VOICETOTEXT) {
+            if (type == VOICE_TO_TEXT) {
                 if (onTransformListener != null)
-                    onTransformListener.onTransform(result, "");
-            } else if (type == VOICE_TO_VOICE||type==TEXT_TO_VOICE_TRANSLATION||type == TEXT_TO_VOICE) {
+                    onTransformListener.onTransform(result, "", type);
+            } else if (type == VOICE_TO_VOICE || type == TEXT_TO_VOICE_TRANSLATION || type == TEXT_TO_VOICE) {
                 ttsUtil.ttsSynthesis(result, mTtsListener);
             }
         }
@@ -151,14 +153,14 @@ public class TransformUtil {
         }
 
         @Override
-        public void onBufferProgress(int percent, int beginPos, int endPos,String info) {
+        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
             // 合成进度
 //            mPercentForBuffering = percent;
-            if (percent == 100){
+            if (percent == 100) {
                 // TODO: 2019/3/27 完成操作
-                if (type == VOICE_TO_VOICE||type == TEXT_TO_VOICE||type==TEXT_TO_VOICE_TRANSLATION) {
-                    if (onTransformListener != null){
-                        onTransformListener.onTransform("", ttsUtil.getFile_content());
+                if (type == VOICE_TO_VOICE || type == TEXT_TO_VOICE || type == TEXT_TO_VOICE_TRANSLATION) {
+                    if (onTransformListener != null) {
+                        onTransformListener.onTransform("", ttsUtil.getFile_content(), type);
                     }
                 }
             }
@@ -213,7 +215,7 @@ public class TransformUtil {
 //            Log.e("讯飞", "结果：" + iatText);
             if (isLast) {
                 //TODO 最后的结果
-                if (type == VOICETOTEXT || type == VOICE_TO_VOICE) {
+                if (type == VOICE_TO_TEXT || type == VOICE_TO_VOICE) {
                     translate(iatTextSb.toString());
                 }
             }
@@ -235,6 +237,6 @@ public class TransformUtil {
     };
 
     public interface OnTransformListener {
-        void onTransform(String results, String fileString);
+        void onTransform(String results, String fileString, int type);
     }
 }

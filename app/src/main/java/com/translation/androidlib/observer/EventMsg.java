@@ -8,6 +8,7 @@ public class EventMsg {
 
     public static final int REGISTER_FINISH = 0;
     public static final int SOCKET_ON_MESSAGE = 1;
+    public static final int MESSAGE_RECEIVE = 2;
 
 
 

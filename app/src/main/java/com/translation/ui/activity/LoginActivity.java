@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity {
          @Override
          public void onSuccess() {
              ToastShow.showToast2(getHostActivity(),"登陆成功");
-             IMUtil.getInstance().init();
+             IMUtil.getInstance().init(getAppContext());
              SpCons.setLoginState(getAppContext(), true);
              DataCache spCache = new SpCache(getAppContext());
              LoginUser loginUser = (LoginUser) spCache.getObject(SpCons.SP_KEY_LOGIN_USER);

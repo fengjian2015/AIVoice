@@ -1,6 +1,7 @@
 package com.translation.ui.activity;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.translation.R;
+import com.translation.androidlib.manager.TapeRecordManager;
 import com.translation.androidlib.observer.EventMsg;
 import com.translation.androidlib.utils.AmrFileDecoder;
 import com.translation.androidlib.utils.FileUtil;
@@ -34,6 +36,7 @@ import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
 import com.translation.model.db.dao.MessageDao;
 import com.translation.model.entity.ChatMsg;
+import com.translation.model.entity.FileInfo;
 import com.translation.model.entity.FriendInfo;
 import com.translation.ui.MainActivity;
 import com.translation.ui.adapter.MessageChatRcvAdapter;
@@ -122,7 +125,7 @@ public class MainChatActivity extends BaseActivity {
 
     @Override
     protected void getIntentData() {
-        chatInfo = (FriendInfo)getIntent().getSerializableExtra(ContactCons.CONTACT_FRIEND);
+        chatInfo = (FriendInfo) getIntent().getSerializableExtra(ContactCons.CONTACT_FRIEND);
     }
 
     @Override
@@ -171,8 +174,6 @@ public class MainChatActivity extends BaseActivity {
             }
         });
 
-
-
         RecordManager.getInstance().changeRecordDir(FileUtil.getSDVoiceRecordPath(getAppContext()));
         RecordManager.getInstance().setRecordResultListener(new RecordResultListener() {
             @Override
@@ -181,24 +182,22 @@ public class MainChatActivity extends BaseActivity {
 
                 String filePath = result.getAbsolutePath();
 
-
                 final TransformUtil transformUtil = new TransformUtil(getAppContext());
                 transformUtil.voiceToText(new File(filePath), TransformUtil.ZH_CN, TransformUtil.EN);
                 transformUtil.setOnTransformListener(new TransformUtil.OnTransformListener() {
                     @Override
-                    public void onTransform(String results, String fileString) {
+                    public void onTransform(String results, String fileString, int type) {
                         LogUtil.i("transform results", results);
                         LogUtil.i("transform fileString", fileString);
-                        if (isTapeRecordStop){
-                            IMUtil.getInstance().sendText(getAppContext(), results, chatInfo,
-                                    TransformUtil.ZH_CN);
+                        if (isTapeRecordStop && type == TransformUtil.VOICE_TO_TEXT) {
+                            IMUtil.getInstance().sendText(getAppContext(), results, tapeRecordSecond,
+                                    fileString, chatInfo, TransformUtil.ZH_CN);
                         }
                         ToastUtil.showShort(getAppContext(), results);
                     }
                 });
             }
         });
-
 
         //长按录音
         tapeRecordIv.setOnTouchListener(new MicImageView.OnTouchListener() {
@@ -242,7 +241,7 @@ public class MainChatActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_conversation_chat_send:
 
                 break;
@@ -261,6 +260,16 @@ public class MainChatActivity extends BaseActivity {
                 Permissions.from(MainChatActivity.this, Permission.Group.STORAGE).start(new PermissionCallback() {
                     @Override
                     public void yes(List<String> data) {
+                        if (msgList.get(position).getContentType() == ChatMsg.TYPE_CONTENT_TAPE_RECORD){
+                            FileInfo resource = msgList.get(position).getResource();
+                            if (resource == null) {
+                                return;
+                            }
+                            String savePath = resource.getSavePath();
+                            if (FileUtil.isFileExists(savePath)){
+                                playVoiceRecord(savePath, position);
+                            }
+                        }
 
                     }
 
@@ -304,7 +313,24 @@ public class MainChatActivity extends BaseActivity {
 
     //播放录音
     private void playVoiceRecord(String path, final int position) {
-
+        TapeRecordManager.getInstance().playEndOrFail();
+        boolean isPlaying = msgList.get(position).isPlaying();
+        for (ChatMsg msg : msgList) {
+            msg.setPlaying(false);
+        }
+        msgList.get(position).setPlaying(!isPlaying);
+        updateRcv();
+        if (msgList.get(position).isPlaying()) {
+            TapeRecordManager.getInstance().playRecord(path, new android.media.MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(android.media.MediaPlayer mp) {
+                    //播放完成
+                    msgList.get(position).setPlaying(false);
+                    updateRcv();
+                    TapeRecordManager.getInstance().playEndOrFail();
+                }
+            });
+        }
     }
 
     //刷新的同时，计算是否需要继续分页
@@ -316,14 +342,31 @@ public class MainChatActivity extends BaseActivity {
 
     @Override
     public void onEventMsg(EventMsg msg) {
-        if (msg.getKey() == EventMsg.SOCKET_ON_MESSAGE){
-            ChatMsg eventChatMsg = (ChatMsg)msg.getData();
+        if (msg.getKey() == EventMsg.SOCKET_ON_MESSAGE) {
+            ChatMsg eventChatMsg = (ChatMsg) msg.getData();
             msgList.add(eventChatMsg);
             Collections.sort(msgList, new ChatMsg.TimeRiseComparator());
             updateRcv();
+
+        } else if (msg.getKey() == EventMsg.MESSAGE_RECEIVE) {
+            ChatMsg eventChatMsg = (ChatMsg) msg.getData();
+            if (eventChatMsg != null) {
+                String filePath = "";
+                if (eventChatMsg.getResource() != null) {
+                    filePath = eventChatMsg.getResource().getSavePath();
+                }
+                FriendInfo friendInfo = new FriendInfo();
+                friendInfo.setFriendId(eventChatMsg.getFromid());
+                friendInfo.setUsername(eventChatMsg.getUsername());
+                IMUtil.getInstance().msgReceiveSaveDB(getAppContext(), eventChatMsg.getContent(),
+                        eventChatMsg.getContentType(), 0, filePath, friendInfo, TransformUtil.ZH_CN);
+
+                msgList.add(eventChatMsg);
+                Collections.sort(msgList, new ChatMsg.TimeRiseComparator());
+                updateRcv();
+            }
         }
     }
-
 
 
 }

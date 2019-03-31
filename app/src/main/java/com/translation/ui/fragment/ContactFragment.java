@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.translation.R;
 import com.translation.androidlib.manager.TapeRecordManager;
@@ -13,6 +14,7 @@ import com.translation.androidlib.utils.LogUtil;
 import com.translation.component.base.BaseFragment;
 import com.translation.component.base.BaseRcvAdapter;
 import com.translation.component.constant.ContactCons;
+import com.translation.component.constant.SpCons;
 import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
 import com.translation.model.entity.FriendInfo;
@@ -29,9 +31,12 @@ import butterknife.BindView;
 public class ContactFragment extends BaseFragment {
 
     private RecyclerView containerRcv;
+    private TextView changeLanguageTv;
 
     private List<FriendInfo> friendInfoList = new ArrayList<>();
     private ContactRcvAdapter rcvAdapter;
+
+    private boolean isZH_CN = true;
 
     @Override
     protected int getLayoutId() {
@@ -41,6 +46,7 @@ public class ContactFragment extends BaseFragment {
     @Override
     protected void initViews() {
         containerRcv = parentView.findViewById(R.id.rcv_contact_container);
+        changeLanguageTv = parentView.findViewById(R.id.tv_contact_change_language);
     }
 
     @Override
@@ -49,6 +55,22 @@ public class ContactFragment extends BaseFragment {
         friendInfoList.clear();
         friendInfoList.addAll(getTestData());
         updateRcv();
+
+        String currentLanguage = SpCons.getCurrentLanguage(getHostActivity());
+        if ("ZH_CN".equals(currentLanguage)){
+
+        }
+
+    }
+
+    @Override
+    protected void setListener() {
+        changeLanguageTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void initRecyclerView(){

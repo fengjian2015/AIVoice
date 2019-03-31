@@ -24,15 +24,17 @@
             android:layout_height="@dimen/divider_height"
             android:background="@color/gray_be" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/tv_contact_change_language"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:text="中文"
+            android:textSize="@dimen/font_size_16"
+            android:textColor="@color/blue_main"
+            android:gravity="center"
+            android:padding="12dp"
             android:layout_gravity="end"
-            android:paddingBottom="10dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/con_plus_01" />
+            />
 
     </FrameLayout>
 

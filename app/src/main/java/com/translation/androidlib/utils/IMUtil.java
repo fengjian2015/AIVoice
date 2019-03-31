@@ -22,7 +22,9 @@ import java.io.File;
 import java.util.List;
 
 public class IMUtil {
+
     private static IMUtil mInstance;
+    private Context context;
 
     public static IMUtil getInstance() {
         if (mInstance == null) {
@@ -53,12 +55,16 @@ public class IMUtil {
         EMClient.getInstance().addConnectionListener(connectionListener);
     }
 
-    public void sendText(Context context, String msgContent, FriendInfo receiver, String language){
-        EMMessage emMessage = EMMessage.createTxtSendMessage(msgContent, receiver.getUsername());
-        emMessage.setAttribute("language", language);
-        emMessage.setAttribute("txt",msgContent);
+
+    public void sendText(Context context, String textContent, int duration, String filePath,
+                         FriendInfo receiver, String language) {
+        EMMessage emMessage = EMMessage.createTxtSendMessage(textContent, receiver.getUsername());
+        emMessage.setAttribute("language", "ch");
+        emMessage.setAttribute("txt", textContent);
+
         EMClient.getInstance().chatManager().sendMessage(emMessage);
-        msgSendSaveDB(context, receiver, UserDao.user, msgContent, language);
+        msgSendSaveDB(context, textContent, ChatMsg.TYPE_CONTENT_TEXT, duration, filePath, receiver,
+                UserDao.user, language);
     }
 
     public void sendVoice(Context context, String filePath, FriendInfo receiver, int duration, String language) {
@@ -66,14 +72,14 @@ public class IMUtil {
         // 增加自己特定的属性
 //        message.setAttribute("language", "ch");
         EMClient.getInstance().chatManager().sendMessage(message);
-        msgSendSaveDB(context, receiver, UserDao.user, filePath, language);
     }
 
-    public void init() {
+    public void init(Context context) {
         EMClient.getInstance().chatManager().loadAllConversations();
         EMClient.getInstance().groupManager().loadAllGroups();
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
         LogUtil.d("fengjian", "登陆");
+        this.context = context;
     }
 
     /**
@@ -83,11 +89,44 @@ public class IMUtil {
 
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
-            //收到消息
-            for (EMMessage emMessage : messages) {
-                LogUtil.d("fengjian", "收到消息" + emMessage.toString() + "  " + emMessage.getStringAttribute("language", "")+"  content:"+emMessage.getBody().toString());
+            try {
+                //收到消息
+                for (final EMMessage emMessage : messages) {
+                    LogUtil.d("fengjian", "收到消息" + emMessage.toString() + "  " +
+                            emMessage.getStringAttribute("language", ""));
+                    /**/
+                    final String senderUsername = emMessage.getFrom();
+                    TransformUtil transformUtil = new TransformUtil(context);
+                    transformUtil.textToVoice(emMessage.getStringAttribute("txt"), TransformUtil.ZH_CN,
+                            TransformUtil.EN);
+                    transformUtil.setOnTransformListener(new TransformUtil.OnTransformListener() {
+                        @Override
+                        public void onTransform(String results, String fileString, int type) {
+                            try {
+                                if (type == TransformUtil.TEXT_TO_VOICE){
+                                    ChatMsg chatMsg = new ChatMsg();
+                                    chatMsg.setFromid(senderUsername);
+                                    chatMsg.setUsername(senderUsername);
+                                    chatMsg.setContentType(ChatMsg.TYPE_CONTENT_TAPE_RECORD);
+                                    chatMsg.setContent(emMessage.getStringAttribute("txt"));
+                                    FileInfo fileInfo = new FileInfo();
+                                    fileInfo.setSavePath(fileString);
+                                    chatMsg.setResource(fileInfo);
+                                    EventManager.post(new EventMsg(EventMsg.SOCKET_ON_MESSAGE, chatMsg));
+                                }
 
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
 
         }
 
@@ -121,25 +160,27 @@ public class IMUtil {
         }
     };
 
-    private void msgSendSaveDB(Context context, FriendInfo receiver, LoginUser sender,
-                               String tapeRecordFilePath, String language) {
-        ChatMsg chatMsg = new ChatMsg(ChatMsg.TYPE_CONTENT_TAPE_RECORD, "", sender.getUsername(),
+    private void msgSendSaveDB(Context context, String textContent, int contentType, int recordDuration,
+                               String tapeRecordFilePath, FriendInfo receiver, LoginUser sender, String originLanguage) {
+        ChatMsg chatMsg = new ChatMsg(contentType, textContent, sender.getUsername(),
                 sender.getNickName(), receiver.getUsername(), receiver.getNickname(), System.currentTimeMillis(),
-                true, UserDao.user.getUsername(), language);
+                true, UserDao.user.getUsername(), originLanguage);
         FileInfo fileInfo = new FileInfo();
         fileInfo.setSavePath(tapeRecordFilePath);
+        fileInfo.setDuration(recordDuration);
         chatMsg.setResource(fileInfo);
         MessageDao.addMessage(context, chatMsg);
         EventManager.post(new EventMsg(EventMsg.SOCKET_ON_MESSAGE, chatMsg));
     }
 
-    private void msgReceiveSaveDB(Context context, FriendInfo sender, String tapeRecordFilePath,
-                                  String language) {
-        ChatMsg chatMsg = new ChatMsg(ChatMsg.TYPE_CONTENT_TAPE_RECORD, "", sender.getUsername(),
+    public void msgReceiveSaveDB(Context context, String textContent, int contentType, int recordDuration,
+                                  String tapeRecordFilePath, FriendInfo sender, String originLanguage) {
+        ChatMsg chatMsg = new ChatMsg(contentType, textContent, sender.getUsername(),
                 sender.getNickname(), sender.getUsername(), sender.getNickname(), System.currentTimeMillis(),
-                false, UserDao.user.getUsername(), language);
+                false, UserDao.user.getUsername(), originLanguage);
         FileInfo fileInfo = new FileInfo();
         fileInfo.setSavePath(tapeRecordFilePath);
+        fileInfo.setDuration(recordDuration);
         chatMsg.setResource(fileInfo);
         MessageDao.addMessage(context, chatMsg);
         EventManager.post(new EventMsg(EventMsg.SOCKET_ON_MESSAGE, chatMsg));
