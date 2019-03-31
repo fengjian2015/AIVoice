@@ -54,7 +54,7 @@ public class IMUtil {
     public void sendVoice(Context context, FriendInfo receiver, String filePath, int duration, String language) {
         EMMessage message = EMMessage.createVoiceSendMessage(filePath, duration, receiver.getUsername());
         // 增加自己特定的属性
-        message.setAttribute("language", "ch");
+//        message.setAttribute("language", "ch");
         EMClient.getInstance().chatManager().sendMessage(message);
         msgSendSaveDB(context, receiver, UserDao.user, filePath, language);
     }

@@ -16,6 +16,8 @@ public class TransformUtil {
     public static final int VOICETOTEXT = 1;
     //语音转翻译后的语音
     public static final int VOICE_TO_VOICE = 2;
+    //语音转翻译后的语音
+    public static final int TEXT_TO_VOICE = 2;
 
     public static final String EN = "en";
     public static final String ZH_CN = "zh-cn";
@@ -43,6 +45,20 @@ public class TransformUtil {
         iatUilt = new IatUilt(context);
     }
 
+
+    /**
+     * 文字转语音并且翻译
+     * @param content
+     * @param accent
+     */
+    public void textToVoicet(String content, String language, String accent) {
+        this.accent = accent;
+        this.language = language;
+        type = TEXT_TO_VOICE;
+        translate(content);
+    }
+
+
     /**
      * 语音转文本并且翻译
      *
@@ -53,7 +69,7 @@ public class TransformUtil {
         this.accent = accent;
         this.language = language;
         type = VOICETOTEXT;
-        iatUilt.executeStream(file, language, accent, mRecognizerListener);
+        iatUilt.executeStream(file,language,accent,mRecognizerListener);
     }
 
     /**
@@ -92,6 +108,8 @@ public class TransformUtil {
                     onTransformListener.onTransform(result, "");
             } else if (type == VOICE_TO_VOICE) {
                 ttsUtil.ttsSynthesis(result, mTtsListener);
+            }else if (type == TEXT_TO_VOICE) {
+                ttsUtil.ttsSynthesis(result, mTtsListener);
             }
         }
     };
@@ -121,7 +139,7 @@ public class TransformUtil {
 //            mPercentForBuffering = percent;
             if (percent == 100){
                 // TODO: 2019/3/27 完成操作
-                if (type == VOICE_TO_VOICE) {
+                if (type == VOICE_TO_VOICE||type == TEXT_TO_VOICE) {
                     if (onTransformListener != null){
                         onTransformListener.onTransform("", ttsUtil.getFile_content());
                     }
