@@ -1,22 +1,30 @@
 package com.translation.ui;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.translation.R;
+import com.translation.androidlib.datamanager.DataCache;
+import com.translation.androidlib.datamanager.SpCache;
 import com.translation.androidlib.utils.AmrFileDecoder;
 import com.translation.androidlib.utils.FileUtil;
 import com.translation.androidlib.utils.LogUtil;
+import com.translation.androidlib.utils.ToastShow;
 import com.translation.androidlib.utils.TransformUtil;
 import com.translation.androidlib.utils.IMUtil;
 import com.translation.component.base.BaseActivity;
+import com.translation.component.constant.SpCons;
 import com.translation.component.permission.PermissionCallback;
 import com.translation.component.permission.Permissions;
 import com.translation.model.db.dao.UserDao;
+import com.translation.model.entity.LoginUser;
+import com.translation.ui.activity.LoginActivity;
 import com.translation.ui.adapter.MainAdapter;
 import com.translation.ui.fragment.ContactFragment;
 import com.translation.ui.fragment.ConversationFragment;
@@ -65,8 +73,31 @@ public class MainActivity extends BaseActivity {
 
     private void initIM() {
         IMUtil.getInstance().setMyConnectionListener(new MyConnectionListener());
+        IMUtil.getInstance().login("aaaaa","bbbbb",new MyEMCallBack());
     }
 
+
+    class MyEMCallBack implements EMCallBack {
+        @Override
+        public void onSuccess() {
+            ToastShow.showToast2(getHostActivity(),"登陆成功");
+
+        }
+
+        @Override
+        public void onError(int code, String error) {
+            if(code==200){
+                IMUtil.getInstance().init();
+            }else {
+                ToastShow.showToast2(getHostActivity(),error);
+            }
+        }
+
+        @Override
+        public void onProgress(int progress, String status) {
+
+        }
+    }
 
     private void initMenu() {
         for (int i = 0; i < llMenu.getChildCount(); i++) {
