@@ -32,6 +32,7 @@ public class MineFragment extends BaseFragment {
     }
 
 
+
     @OnClick({R.id.tv_more_personal_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
