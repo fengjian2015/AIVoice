@@ -156,7 +156,7 @@ public class TransformUtil {
         public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
             // 合成进度
 //            mPercentForBuffering = percent;
-            if (percent == 100) {
+            if (percent == 100) {     
                 // TODO: 2019/3/27 完成操作
                 if (type == VOICE_TO_VOICE || type == TEXT_TO_VOICE || type == TEXT_TO_VOICE_TRANSLATION) {
                     if (onTransformListener != null) {
