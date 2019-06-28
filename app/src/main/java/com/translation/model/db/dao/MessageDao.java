@@ -22,6 +22,7 @@ public class MessageDao {
     public static final String SELF_ID = "self_id";
     public static final String MSG_ID = "msg_id";
     public static final String AVATAR = "avatar";
+    public static final String CONTENT_TYPE = "content_type";
     public static final String CONTENT = "content";
     public static final String CHAT_ID = "chat_id";
     public static final String CHAT_NAME = "chat_name";
@@ -54,6 +55,7 @@ public class MessageDao {
     private static String insertSql = "insert into " + TABLE_NAME + "( " +
             MSG_ID + ", " +
             AVATAR + ", " +
+            CONTENT_TYPE + ", " +
             CONTENT + ", " +
             CHAT_ID + ", " +
             CHAT_NAME + ", " +
@@ -81,7 +83,7 @@ public class MessageDao {
             SHOW + ", " +
             LANGUAGE + ", " +
             USER_ID + " ) " +
-            "select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
+            "select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
             "where not exists (select " + MSG_ID + " from " + TABLE_NAME + " where " + MSG_ID + " = ?)";
 
     public static void addMessage(Context context, ChatMsg chatMsg) {
@@ -116,7 +118,7 @@ public class MessageDao {
                 if (chatMsg.getTopTimestamp() > 0) {
                     topTime = TimeUtil.timestampToStr(chatMsg.getTopTimestamp());
                 }
-                db.execSQL(insertSql, new String[]{chatMsg.getMsgId(), chatMsg.getAvatar(), chatMsg.getContent(),
+                db.execSQL(insertSql, new String[]{chatMsg.getMsgId(), chatMsg.getAvatar(), chatMsg.getContentType() + "", chatMsg.getContent(),
                         chatMsg.getChatId(), chatMsg.getChatName(), chatMsg.getChatAvatar(), chatMsg.getFromid(),
                         chatMsg.getGroupId(), chatMsg.getMsgType(), chatMsg.getUsername(), chatMsg.getFriendNote(),
                         originPath, downloadPath, savePath, fileName, String.valueOf(fileType), String.valueOf(fileLength),
@@ -248,16 +250,15 @@ public class MessageDao {
     }
 
     //打开聊天页，获取当前时间戳之前的消息列表
-    public static List<ChatMsg> getMessageBeforeList(Context context, String chatId, String msgType,
+    public static List<ChatMsg> getMessageBeforeList(Context context, String chatId,
                                                      long startTimestamp) {
         SQLiteHelper sqLiteHelper = new SQLiteHelper(context);
         SQLiteDatabase db = sqLiteHelper.getWritableDatabase();
         if (UserDao.user != null) {
-            String sql = "select * from ( select * from " + TABLE_NAME + " where " + USER_ID + " = ? and " +
-                    CHAT_ID + " = ? and " + SHOW + " = 1 and " + MSG_TYPE + " = ? and " +
+            String sql = "select * from ( select * from " + TABLE_NAME + " where " +
+                    CHAT_ID + " = ? and " +
                     TIMESTAMP + " < ? order by " + TIMESTAMP + " desc limit ? ) order by " + TIMESTAMP;
-            Cursor cursor = db.rawQuery(sql, new String[]{UserDao.user.getUserId(), chatId, msgType,
-                    startTimestamp + "", PAGE_SIZE + ""});
+            Cursor cursor = db.rawQuery(sql, new String[]{chatId, startTimestamp + "", PAGE_SIZE + ""});
             return parseCursorData(db, cursor);
         }
         return null;
@@ -315,6 +316,7 @@ public class MessageDao {
                 chatMsg.setSelfId(cursor.getString(cursor.getColumnIndex(SELF_ID)));
                 chatMsg.setMsgId(cursor.getString(cursor.getColumnIndex(MSG_ID)));
                 chatMsg.setAvatar(cursor.getString(cursor.getColumnIndex(AVATAR)));
+                chatMsg.setContentType(cursor.getInt(cursor.getColumnIndex(CONTENT_TYPE)));
                 chatMsg.setContent(cursor.getString(cursor.getColumnIndex(CONTENT)));
                 chatMsg.setChatId(cursor.getString(cursor.getColumnIndex(CHAT_ID)));
                 chatMsg.setChatName(cursor.getString(cursor.getColumnIndex(CHAT_NAME)));
