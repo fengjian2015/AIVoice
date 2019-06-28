@@ -92,22 +92,8 @@ public class TapeRecordManager {
         }
     }
 
-<<<<<<< HEAD
     public void playRecord(String path, MediaPlayer.OnCompletionListener completionListener) {
-=======
-    public void playRecord(Context context, String path, MediaPlayer.OnCompletionListener completionListener){
-        try {
-            Uri uri = Uri.fromFile(new File(path));
-            mediaPlayer = MediaPlayer.create(context, uri);
-            mediaPlayer.start();
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void playRecord(String path, MediaPlayer.OnCompletionListener completionListener){
->>>>>>> 8df6b1c4f5768066bfd93307045a9d3d9f9286f0
         try {
 
 
